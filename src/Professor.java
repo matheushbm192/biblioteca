@@ -1,5 +1,11 @@
 public class Professor extends Usuario {
-    public Professor(String nome, String email, String senha) {
+
+    int limiteEmprestimo; 
+    String departamento; 
+
+    public Professor(String nome, String email, String senha, String departamento) {
         super(nome, email, senha);
+        this.limiteEmprestimo = 10; 
+        this.departamento = departamento; 
     }
 }
