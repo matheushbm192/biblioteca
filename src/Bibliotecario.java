@@ -101,7 +101,9 @@ public class Bibliotecario extends Usuario {
 
 
         }else{
-            //Bibliotecário
+            System.out.println("Informe o número de telefone: ");
+            String telefone = entrada.nextLine();
+            Bibliotecario novoBibliotecario = new Bibliotecario(nome, email, senha, telefone);
         }
 
 
