@@ -24,5 +24,9 @@ public abstract class  Usuario {
         return senha;
     }
 
+    public static void menu(){
+        
+    }
+
 
 }

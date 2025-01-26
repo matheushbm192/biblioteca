@@ -107,7 +107,13 @@ public class Bibliotecario extends Usuario {
         }
 
 
+    }
 
+    public static void sair(){
+
+        //salvar todos os registros feitos no dia 
+        TelaInicio.inicio();
     }
     // registra devoluçoes
+
 }
