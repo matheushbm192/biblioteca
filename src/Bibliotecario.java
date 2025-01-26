@@ -19,7 +19,8 @@ public class Bibliotecario extends Usuario {
         System.out.println("3- Desbolquar usuário");
         System.out.println("4- Lista de obras emprestadas");
         System.out.println("5- Lista de usuários com atraso nos empréstimos");
-        System.out.println("6- Sair");
+        System.out.println("6- Consultar informações da obra");
+        System.out.println("7- Sair");
         int escolha = entrada.nextInt();
 
         switch (escolha) {
@@ -67,8 +68,11 @@ public class Bibliotecario extends Usuario {
                 listarUsuariosAtrasos();
                 break;
             case 6:
-                sair();
+                Biblioteca.consultarObras();();
                 break;
+            case 7: 
+            sair();
+            break;
             default:
                 System.out.println("Opção inválida. Tente novamente!");
                 menu();
@@ -112,8 +116,25 @@ public class Bibliotecario extends Usuario {
     public static void sair(){
 
         //salvar todos os registros feitos no dia 
+        Biblioteca.atualizarInformacoes();
         TelaInicio.inicio();
     }
-    // registra devoluçoes
+    
+    public static void registrarDevolucao(){
+        //implementar
+        Biblioteca.atualizarInformacoes();
+    }
+
+    public static void desbloquearUsuario(){
+
+    }
+
+    public static void listarObrasEmpres(){
+
+    }
+
+    public static void listarUsuariosAtrasos(){
+
+    }
 
 }

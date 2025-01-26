@@ -2,6 +2,37 @@ import java.util.Scanner;
 
 public class Biblioteca {
 
+    public static void menu(){
+        Scanner entrada = new Scanner(System.in);
+
+        System.out.println("Informe qual ação deseja fazer:");
+        System.out.println("1- Realizar Empréstimo");
+        System.out.println("2- Consultar Informações da obra");
+        System.out.println("3 - Sair");
+       
+        int escolha = entrada.nextInt();
+
+        switch (escolha) {
+            case 1:
+            realizarEmprestimo();
+                break;
+            case 2:
+            consultarObras();
+                break;
+            case 3: 
+            sair();
+            break; 
+            default:
+                System.out.println("Opção inválida. Tente novamente!");
+                menu();
+        }
+    }
+
+    public static void sair(){
+        atualizarInformacoes();
+        TelaInicio.inicio();
+    }
+
     // passar id do usuario
     public static void realizarEmprestimo() {
 
@@ -32,6 +63,8 @@ public class Biblioteca {
                 
             }
         }
+
+        //chamar menu do professor ou aluno
     }
 
     // passar como parametro a obra (id ou nome)
