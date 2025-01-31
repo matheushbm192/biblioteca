@@ -13,8 +13,6 @@ public abstract class  Usuario {
         return nome;
     }
 
-
-
     public String getEmail() {
         return email;
     }

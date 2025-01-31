@@ -1,12 +1,15 @@
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Bibliotecario extends Usuario {
     String telefone;
     int qntDevolucoes;
+    UUID id;
 
     public Bibliotecario(String nome, String email, String senha, String telefone) {
         super(nome, email, senha);
         this.telefone = telefone;
+        this.id = UUID.randomUUID();
     }
 
     public static void menu() {
@@ -68,7 +71,7 @@ public class Bibliotecario extends Usuario {
                 listarUsuariosAtrasos();
                 break;
             case 6:
-                Biblioteca.consultarObras();();
+                Biblioteca.consultarObras();
                 break;
             case 7: 
             sair();
