@@ -42,6 +42,7 @@ public class Biblioteca {
     }
 
     // passar id do usuario
+    //alterar arquivo acervo; 
     public static void realizarEmprestimo() {
 
         Scanner entrada = new Scanner(System.in);

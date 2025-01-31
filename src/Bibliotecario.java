@@ -113,6 +113,8 @@ public class Bibliotecario extends Usuario {
             Bibliotecario novoBibliotecario = new Bibliotecario(nome, email, senha, telefone);
         }
 
+        //chamar função para adicionar usuário no arquivo 
+
 
     }
 

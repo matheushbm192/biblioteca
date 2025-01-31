@@ -15,6 +15,9 @@ public class TelaInicio {
         String email = entrada.nextLine();
         System.out.println("Senha: ");
         String senha = entrada.nextLine();
+        //chamar função que adiciona no arquivo 
+        System.out.println("Cadastro realizado com sucesso!\n");
+        Biblioteca.menu();
     }
 
     public static void cadastroBibliotecario() {
@@ -30,12 +33,15 @@ public class TelaInicio {
         System.out.println("Informe o número de telefone: ");
         String telefone = entrada.nextLine();
         Bibliotecario novoBibliotecario = new Bibliotecario(nome, email, senha, telefone);
+        //chamar função que adiciona no arquivo;
+        System.out.println("Cadastro realizado com sucesso!\n");
+        Bibliotecario.menu();
     }
 
 
 
 
-public static void cadastrarBibliotecario(){
+/*public static void cadastrarBibliotecario(){
     Scanner entrada = new Scanner(System.in);
         System.out.println("Informe o nome do usuário: ");
         String nome = entrada.nextLine();
@@ -49,6 +55,6 @@ public static void cadastrarBibliotecario(){
 
         //analisar qual tipo de usuário entrou para chamar seu determinado menu; 
 
-}
+}*/
 
 }
