@@ -23,4 +23,10 @@ public class LoginTxt {
         }
         
     }
+
+    //criar método para adicionar novo usuário no arquivo; 
+
+    // criar método para conferir se usuário esta que esta logando já esta cadastrado;
+    
+    
 }
