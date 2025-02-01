@@ -304,6 +304,7 @@ public class Biblioteca {
 
     public static void addLogin(Usuario usuario, int tipo){
         //todo: escrever usuario no txt
+
     }
     public static void atualizarInformacoes() {
         // não entendi esse!
