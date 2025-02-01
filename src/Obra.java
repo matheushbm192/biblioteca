@@ -16,4 +16,9 @@ public class Obra {
     public int getQuantidade() {
         return this.quantidade;
     }
+
+    public String getId() {
+        return this.id;
+    }
+
 }

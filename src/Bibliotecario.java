@@ -4,12 +4,11 @@ import java.util.UUID;
 public class Bibliotecario extends Usuario {
     String telefone;
     int qntDevolucoes;
-    UUID id;
+    
 
     public Bibliotecario(String nome, String email, String senha, String telefone) {
         super(nome, email, senha);
         this.telefone = telefone;
-        this.id = UUID.randomUUID();
     }
 
     public static void menu() {
@@ -17,7 +16,7 @@ public class Bibliotecario extends Usuario {
         Scanner entrada = new Scanner(System.in);
 
         System.out.println("Informe qual ação deseja fazer:");
-        System.out.println("1- Cadastrar Usuario");
+        System.out.println("1- Cadastrar Usuário");
         System.out.println("2- Registrar devolução");
         System.out.println("3- Desbolquar usuário");
         System.out.println("4- Lista de obras emprestadas");
