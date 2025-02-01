@@ -11,6 +11,7 @@ public class Biblioteca {
     public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
+    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
     public static void menu(){
         Scanner entrada = new Scanner(System.in);
 
@@ -286,6 +287,24 @@ public class Biblioteca {
         
     }
 
+    public static ArrayList<String[]> lerLogin(){
+        ArrayList<String[]> valores = new ArrayList<>();
+        try{
+            BufferedReader buffer = new BufferedReader(new FileReader(login));
+            String linha;
+            while ((linha = buffer.readLine()) != null) {
+                valores.add(linha.split("\n"));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return valores;
+    }
+
+    public static void addLogin(Usuario usuario, int tipo){
+        //todo: escrever usuario no txt
+    }
     public static void atualizarInformacoes() {
         // não entendi esse!
     }
