@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -16,13 +17,13 @@ public class Bibliotecario extends Usuario {
         Scanner entrada = new Scanner(System.in);
 
         System.out.println("Informe qual ação deseja fazer:");
-        System.out.println("1- Cadastrar Usuário");
+        System.out.println("1- Cadastrar Usuário");//adicionar no arquivo
         System.out.println("2- Registrar devolução");
         System.out.println("3- Desbolquar usuário");
         System.out.println("4- Lista de obras emprestadas");
-        System.out.println("5- Lista de usuários com atraso nos empréstimos");
-        System.out.println("6- Consultar informações da obra");
-        System.out.println("7- Sair");
+        System.out.println("5- Lista de usuários com atraso nos empréstimos");//feito(só imrimir)
+        System.out.println("6- Consultar informações da obra");//feito
+        System.out.println("7- Sair"); //feito
         int escolha = entrada.nextInt();
 
         switch (escolha) {
@@ -58,7 +59,10 @@ public class Bibliotecario extends Usuario {
 
                 break;
             case 2:
-                registrarDevolucao();
+            //corrigir a chamada do email 
+                System.out.println("Informe o email do usuário que está realizando a devolução: ");
+                String email = entrada.nextLine();
+                registrarDevolucao(email);
                 break;
             case 3:
                 desbloquearUsuario();
@@ -70,7 +74,34 @@ public class Bibliotecario extends Usuario {
                 listarUsuariosAtrasos();
                 break;
             case 6:
-                Biblioteca.consultarObras();
+                
+            boolean respostaValida = false;
+            while (respostaValida = false) {
+
+                System.out.println("Para consultar um livro através do Id, digite 1.");
+                System.out.println("Para consultar um livro através do título, digite 2.");
+                int resposta = entrada.nextInt();
+
+                if (resposta == 1) {
+                    System.out.println("Informe o Id do livro que deseja consultar: ");
+                    int id = entrada.nextInt();
+                    Obra obra = Biblioteca.consultarObraId(id);
+                    Biblioteca.imprimirResultadoConsulta(obra);
+                    respostaValida = true;
+                } else if (resposta == 2) {
+                    System.out.println("Informe o título do livro que deseja consultar: ");
+                    String titulo = entrada.nextLine();
+                    Obra obra = Biblioteca.consultarObraTitulo(titulo);
+                    Biblioteca.imprimirResultadoConsulta(obra);
+
+                    respostaValida = true;
+                } else {
+                    respostaValida = false;
+                }
+
+                break;
+            }
+
                 break;
             case 7: 
             sair();
@@ -112,7 +143,7 @@ public class Bibliotecario extends Usuario {
             Bibliotecario novoBibliotecario = new Bibliotecario(nome, email, senha, telefone);
         }
 
-        //chamar função para adicionar usuário no arquivo 
+        menu(); 
 
 
     }
@@ -124,9 +155,19 @@ public class Bibliotecario extends Usuario {
         TelaInicio.inicio();
     }
     
-    public static void registrarDevolucao(){
+    public static void registrarDevolucao(String email){
         //implementar
-        Biblioteca.atualizarInformacoes();
+        //Biblioteca.atualizarInformacoes();
+        ArrayList<String[]>linhas = Biblioteca.lerDados();
+
+        for(String[] linha: linhas){
+            if(linha[0].equals(linhas)){
+                
+            }
+        }
+
+        Biblioteca.gerarUsuariosBloqueados();
+        
     }
 
     public static void desbloquearUsuario(){
@@ -138,7 +179,7 @@ public class Bibliotecario extends Usuario {
     }
 
     public static void listarUsuariosAtrasos(){
-
+        Biblioteca.gerarUsuariosBloqueados();
     }
 
 }

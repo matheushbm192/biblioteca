@@ -6,7 +6,7 @@ public class TelaInicio {
     //verificar se já existe algum bibliotecário cadastrado!
     // caso tenha:
     }
-    public static void login(){
+    public static String login(){
         Scanner entrada = new Scanner(System.in);
         System.out.println("Bem vindo a biblioteca!");
         System.out.println();
@@ -18,6 +18,7 @@ public class TelaInicio {
         //chamar função que adiciona no arquivo 
         System.out.println("Cadastro realizado com sucesso!\n");
         Biblioteca.menu();
+        return email;
     }
 
     public static void cadastroBibliotecario() {

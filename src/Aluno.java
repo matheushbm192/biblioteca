@@ -9,4 +9,9 @@ public class Aluno extends Usuario {
         this.curso = curso;
         this.limiteEmprestimo = 2; 
     }
+
+    @Override
+    public String getEmail() {
+        return super.getEmail();
+    }
 }

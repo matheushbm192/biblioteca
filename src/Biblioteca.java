@@ -331,7 +331,7 @@ public class Biblioteca {
 
     //fazer!
     public static void gerarHistoricoEmpres(){
-        
+
     }
 
     public static void atualizarInformacoes() {
