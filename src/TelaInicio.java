@@ -15,6 +15,8 @@ public class TelaInicio {
         String email = entrada.nextLine();
         System.out.println("Senha: ");
         String senha = entrada.nextLine();
+        //verificar se usuario existe e se existir, retornar um array todos os dados presentes em login.txt
+        // formatar o array em uma instancia de
         //chamar função que adiciona no arquivo 
         System.out.println("Cadastro realizado com sucesso!\n");
         Biblioteca.menu();
