@@ -1,15 +1,17 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
 public class Biblioteca {
     public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
-    public static  String usarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados";
-
+    public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
+    public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
     public static void menu(){
         Scanner entrada = new Scanner(System.in);
 
@@ -149,19 +151,63 @@ public class Biblioteca {
         return resultado;
     }
 
-    public void  gerarUsuariosBlqueados(){
-        ArrayList<Emprestimos> emprestimos = lerHistoricoEmprestimos();
-        LocalDate hoje = LocalDate.now();
-        for (Emprestimos emprestimo : emprestimos){
-            long diasDiferenca = ChronoUnit.DAYS.between(hoje, emprestimo.getData());
-            if(diasDiferenca > 7){
-                try{
-                BufferedWriter buffer = new BufferedWriter(new FileWriter(usarioBloqueado));
+    public static ArrayList<String[]> lerDados(){
+        ArrayList<String[]> valores = new ArrayList<>();
+        try{
+            BufferedReader buffer = new BufferedReader(new FileReader(dados));
+            String linha;
+            while ((linha = buffer.readLine()) != null) {
+                valores.add(linha.split("\n"));
+            }
 
-                } catch (IOException e){
-                    e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return valores;
+    }
+
+    public static void  gerarUsuariosBloqueados(){
+        ArrayList<String[]> linhas = lerDados();
+
+        ArrayList<String[]> livros = new ArrayList<>();
+
+        ArrayList<String[]> atrasados = new ArrayList<>();
+        LocalDate hoje = LocalDate.now();
+        for (String[] linha : linhas) {
+
+            String[] valores = linha[0].split(",");
+            System.out.println(valores[0]);
+
+            for (int i = 2; i < Integer.parseInt(valores[1]) + 2; i++) {
+                String[] resultado = valores[i].split("-");
+                livros.add(resultado);
+            }
+            System.out.println(Arrays.toString(livros.getFirst()));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            for (String[] livro : livros) {
+                long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(livro[1],formatter));
+                System.out.println(diasDiferenca);
+                if ((diasDiferenca * -1) > 7) {
+                    String[] usuarioAtrasado = {valores[0], livro[0] + "-" + livro[1]};
+                    atrasados.add(usuarioAtrasado);
                 }
             }
+        }
+        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(usuarioBloqueado))) {
+
+            for (String[] linha : atrasados) {
+                System.out.println(Arrays.toString(linha));
+                // Junta os elementos do array com vírgula e espaço entre eles
+                String linhaFormatada = String.join(",", linha);
+                System.out.println("1 " +linhaFormatada);
+                escritor.write(linhaFormatada); // Escreve a linha no arquivo
+                escritor.newLine(); // Pula para a próxima linha
+            }
+            System.out.println("Arquivo escrito com sucesso!");
+
+            } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
         }
     }
 
