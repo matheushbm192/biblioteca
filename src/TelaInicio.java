@@ -44,10 +44,6 @@ public class TelaInicio {
             cadastroBibliotecario();
         }
         return null;
-        // verificar se usuario existe e se existir, retornar um array todos os dados
-        // presentes em login.txt
-        // formatar o array em uma instancia de
-        // chamar função que adiciona no arquivo
 
     }
 
@@ -64,7 +60,7 @@ public class TelaInicio {
         System.out.println("Informe o número de telefone: ");
         String telefone = entrada.nextLine();
         Bibliotecario novoBibliotecario = new Bibliotecario(nome, email, senha, telefone);
-        // chamar função que adiciona no arquivo;
+        Biblioteca.addLoginBibliotecario(novoBibliotecario);
         System.out.println("Cadastro realizado com sucesso!\n");
         login();
 

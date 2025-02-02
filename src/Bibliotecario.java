@@ -41,8 +41,8 @@ public class Bibliotecario extends Usuario {
 
         System.out.println("Informe qual ação deseja fazer:");
         System.out.println("1- Cadastrar Usuário");// adicionar no arquivo
-        System.out.println("2- Registrar devolução");
-        System.out.println("3- Desbolquar usuário");
+        System.out.println("2- Registrar devolução");//aletrar Status no arquivo histórico
+        System.out.println("3- Desbolquar usuário");//feito
         System.out.println("4- Lista de obras emprestadas");//feito
         System.out.println("5- Lista de usuários com atraso nos empréstimos");// feito
         System.out.println("6- Consultar informações da obra");// feito
@@ -192,7 +192,7 @@ public class Bibliotecario extends Usuario {
     }
 
     public void desbloquearUsuario() {
-
+        Biblioteca.gerarUsuariosBloqueados();
     }
 
     public void listarObrasEmpres() {

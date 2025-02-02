@@ -5,11 +5,11 @@ public class Emprestimos extends Obra{
     private LocalDate data;
     private String status;
 
-    public Emprestimos(String id, String titulo, LocalDate data, String email,int quantidade,String status) {
+    public Emprestimos(String id, String titulo,String email,int quantidade) {
         super(id, titulo, quantidade);
-        this.data = data;
+        this.data = LocalDate.now();
         this.email = email;
-        this.status = status;
+        this.status = "pendente";
     }
 
     public String getEmail() {

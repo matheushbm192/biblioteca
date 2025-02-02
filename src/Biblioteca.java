@@ -8,39 +8,38 @@ import java.util.Scanner;
 
 public class Biblioteca {
     public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
-    public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
-    public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
+    public static String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
+    public static String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
-   
 
-    
-    public static void menu(Object usuario){
+    public static void menu(Object usuario) {
         Scanner entrada = new Scanner(System.in);
 
         String email = " ";
-        //fazer de limite de empréstimo
+        int limiteEmprestimo = 0;
 
         if (usuario instanceof Aluno) {
             Aluno usuarioVez = (Aluno) usuario; // Converte para Aluno
             email = usuarioVez.getEmail();
-            
+            limiteEmprestimo = usuarioVez.getLimiteEmprestimo();
+
         } else if (usuario instanceof Professor) {
             Professor usuarioVez = (Professor) usuario; // Converte para Professor
             email = usuarioVez.getEmail();
+            limiteEmprestimo = usuarioVez.getLimiteEmprestimo();
         }
-    
 
         System.out.println("Informe qual ação deseja fazer:");
-        System.out.println("1- Realizar Empréstimo");//escrever a informação no arquivo dados
-        System.out.println("2- Consultar Informações da obra");//feito
-        System.out.println("3 - Sair");//feito
+        System.out.println("1- Realizar Empréstimo");// escrever a informação no arquivo dados
+        System.out.println("2- Consultar Informações da obra");// feito
+        System.out.println("3 - Sair");// feito
 
         int escolha = entrada.nextInt();
 
         switch (escolha) {
             case 1:
-                realizarEmprestimo(email);
+                realizarEmprestimo(email, limiteEmprestimo);
                 break;
             case 2:
 
@@ -86,7 +85,11 @@ public class Biblioteca {
 
     // passar id do usuario
     // alterar arquivo acervo;
-    public static void realizarEmprestimo(String email) {
+    public static void realizarEmprestimo(String email, int limiteEmprestimo) {
+
+        String id = " ";
+        String titulo = " ";
+        int quantidade = 0;
 
         Scanner entrada = new Scanner(System.in);
         boolean bloqueado = usuarioBloqueado(email);
@@ -96,7 +99,7 @@ public class Biblioteca {
                     "Você está com atrasos na devolução, portanto, está bloqueado para pegar novos exemplares.");
         } else {
 
-            boolean limite = limiteEmprestimos();
+            boolean limite = limiteEmprestimos(email, limiteEmprestimo);
             if (limite) {
                 System.out.println(
                         "Seu limite de empréstimos já foi alcançado. Realize devolução para pegar novos livros.");
@@ -112,14 +115,18 @@ public class Biblioteca {
 
                     if (resposta == 1) {
                         System.out.println("Informe o Id do livro que deseja consultar: ");
-                        int id = entrada.nextInt();
+                        id = entrada.nextLine();
                         Obra obra = consultarObraId(id);
+                        titulo = obra.getTitulo();
+                        quantidade = obra.getQuantidade();
                         disponibilidade = exemplarDisponivel(obra);
                         respostaValida = true;
                     } else if (resposta == 2) {
                         System.out.println("Informe o título do livro que deseja consultar: ");
-                        String titulo = entrada.nextLine();
+                        titulo = entrada.nextLine();
                         Obra obra = consultarObraTitulo(titulo);
+                        id = obra.getId();
+                        quantidade = obra.getQuantidade();
                         imprimirResultadoConsulta(obra);
                         disponibilidade = exemplarDisponivel(obra);
                         respostaValida = true;
@@ -130,18 +137,24 @@ public class Biblioteca {
                     if (!disponibilidade) {
                         System.out.println("Não há mais exemplares para realizar empréstimo.");
                     } else {
-                        //chamar método que acresenta empréstimo no histórico 
-                        //alterar a quantidade de livros no acervo
-                        }
+                        //String id, String titulo, String email,int quantidade
+                        Emprestimos emprestimo = new Emprestimos(id, titulo, email, quantidade);
+                        addEmprestimo(emprestimo);
+                        // alterar a quantidade de livros no acervo
+                        alteraQuantAcervo(id);
 
-                       
                     }
 
                 }
-            }
 
+            }
         }
-    
+
+    }
+    public static void alteraQuantAcervo(String id){
+
+
+    }
 
     public static ArrayList<Obra> lerAcervo() {
 
@@ -167,7 +180,7 @@ public class Biblioteca {
         return resultado;
     }
 
-    public static ArrayList<String[]> lerUsuariosBloqueados(){
+    public static ArrayList<String[]> lerUsuariosBloqueados() {
 
         ArrayList<String[]> valores = new ArrayList<String[]>();
         try {
@@ -198,7 +211,7 @@ public class Biblioteca {
         System.out.println("Quantidade: " + obra.getQuantidade());
     }
 
-    public static Obra consultarObraId(int id) {
+    public static Obra consultarObraId(String id) {
         for (Obra obra : lerAcervo()) {
             if (obra.getId().equals(id)) {
                 return obra;
@@ -217,16 +230,7 @@ public class Biblioteca {
     }
 
     public static boolean exemplarDisponivel(Obra obra) {
-        /*
-         * for (Obra obra : lerAcervo()) {
-         * if (obra.getTitulo().equals(nomeObra)) {
-         * if (obra.getQuantidade() > 0) {
-         * return true;
-         * }
-         * }
-         * }
-         * return false;
-         */
+
         if (obra.getQuantidade() > 0) {
             return true;
         } else {
@@ -256,9 +260,9 @@ public class Biblioteca {
         return resultado;
     }
 
-    public static ArrayList<String[]> lerDados(){
+    public static ArrayList<String[]> lerDados() {
         ArrayList<String[]> valores = new ArrayList<>();
-        try{
+        try {
             BufferedReader buffer = new BufferedReader(new FileReader(dados));
             String linha;
             while ((linha = buffer.readLine()) != null) {
@@ -271,7 +275,7 @@ public class Biblioteca {
         return valores;
     }
 
-    public static void  gerarUsuariosBloqueados(){
+    public static void gerarUsuariosBloqueados() {
         ArrayList<String[]> linhas = lerDados();
 
         ArrayList<String[]> livros = new ArrayList<>();
@@ -292,54 +296,54 @@ public class Biblioteca {
             System.out.println(Arrays.toString(livros.getFirst()));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             for (String[] livro : livros) {
-                long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(livro[1],formatter));
+                long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(livro[1], formatter));
                 System.out.println(diasDiferenca);
                 if ((diasDiferenca * -1) > 7) {
-                    String[] usuarioAtrasado = {valores[0], livro[0] + "-" + livro[1]};
+                    String[] usuarioAtrasado = { valores[0], livro[0] + "-" + livro[1] };
                     atrasados.add(usuarioAtrasado);
                 }
             }
         }
-        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(usuarioBloqueado))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(usuarioBloqueado))) {
 
             for (String[] linha : atrasados) {
                 System.out.println(Arrays.toString(linha));
                 // Junta os elementos do array com vírgula e espaço entre eles
                 String linhaFormatada = String.join(",", linha);
-                System.out.println("1 " +linhaFormatada);
+                System.out.println("1 " + linhaFormatada);
                 escritor.write(linhaFormatada); // Escreve a linha no arquivo
                 escritor.newLine(); // Pula para a próxima linha
             }
             System.out.println("Arquivo escrito com sucesso!");
 
-            } catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
             e.printStackTrace();
         }
     }
 
-    //arrumar para passar o usuario da vez(email);
+    // arrumar para passar o usuario da vez(email);
     public static boolean usuarioBloqueado(String email) {
         gerarUsuariosBloqueados();
-        ArrayList<String[]>linhas = lerUsuariosBloqueados();
+        ArrayList<String[]> linhas = lerUsuariosBloqueados();
 
-        for(String[] linha: linhas){
-            if(linha[0].equals(email)){
+        for (String[] linha : linhas) {
+            if (linha[0].equals(email)) {
                 return true;
             }
         }
         return false;
-        
-    }
-
-    //fazer!
-    public static void gerarHistoricoEmpres(){
 
     }
 
-    public static ArrayList<String[]> lerLogin(){
+    // fazer!
+    public static void gerarHistoricoEmpres() {
+
+    }
+
+    public static ArrayList<String[]> lerLogin() {
         ArrayList<String[]> valores = new ArrayList<>();
-        try{
+        try {
             BufferedReader buffer = new BufferedReader(new FileReader(login));
             String linha;
             while ((linha = buffer.readLine()) != null) {
@@ -352,60 +356,36 @@ public class Biblioteca {
         return valores;
     }
 
-    public static boolean validaUsuario(String email, String senha){
-        ArrayList<String[]>usuarios = lerLogin();
+    public static boolean validaUsuario(String email, String senha) {
+        ArrayList<String[]> usuarios = lerLogin();
 
-        for(String[] usuario: usuarios){
-            if((usuario[0].equals(email)) && (usuario[1].equals(senha))){
+        for (String[] usuario : usuarios) {
+            if ((usuario[0].equals(email)) && (usuario[1].equals(senha))) {
                 return true;
             }
         }
         return false;
-        
 
     }
 
-    public static String[] retornaDados(String email){
-        ArrayList<String[]>usuarios = lerLogin();
+    public static String[] retornaDados(String email) {
+        ArrayList<String[]> usuarios = lerLogin();
 
-        for(String[] usuario: usuarios){
-            if(usuario[0].equals(email)){
+        for (String[] usuario : usuarios) {
+            if (usuario[0].equals(email)) {
                 return usuario;
             }
         }
         return null;
-        /*for (String[] valor : valores) {
-            Emprestimos formataEmprestimo = new Emprestimos(valor[0], valor[1], LocalDate.parse(valor[2]), valor[3],
-                    Integer.parseInt(valor[4]), valor[5]);
-            resultado.add(formataEmprestimo);*/
     }
 
-    public static void addLoginAluno( Aluno usuario){
-        //todo: escrever usuario no txt
-        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(login,true))) {
-                // Junta os elementos do array com vírgula e espaço entre eles
-
-            String[] login = {usuario.getEmail(),usuario.getSenha(),usuario.getNome(),"2",usuario.getMatricula(),usuario.getCurso()};
-            String linhaFormatada = String.join(",", login);
-            escritor.write(linhaFormatada);
-
-            escritor.write(linhaFormatada); // Escreve a linha no arquivo
-            escritor.newLine(); // Pula para a próxima linha
-
-            System.out.println("Arquivo escrito com sucesso!");
-
-        } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao escrever no arquivo.");
-            e.printStackTrace();
-        }
-    }
-
-    public static void addLoginProfessor( Professor usuario){
-        //todo: escrever usuario no txt
-        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(login,true))) {
+    public static void addLoginAluno(Aluno usuario) {
+        // todo: escrever usuario no txt
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(login, true))) {
             // Junta os elementos do array com vírgula e espaço entre eles
 
-            String[] login = {usuario.getEmail(),usuario.getSenha(),usuario.getNome(),"1",usuario.getDepartamento()};
+            String[] login = { usuario.getEmail(), usuario.getSenha(), usuario.getNome(), "2", usuario.getMatricula(),
+                    usuario.getCurso() };
             String linhaFormatada = String.join(",", login);
             escritor.write(linhaFormatada);
 
@@ -420,12 +400,13 @@ public class Biblioteca {
         }
     }
 
-    public static void addLoginBibliotecario( Bibliotecario usuario){
-        //todo: escrever usuario no txt
-        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(login,true))) {
+    public static void addLoginProfessor(Professor usuario) {
+        // todo: escrever usuario no txt
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(login, true))) {
             // Junta os elementos do array com vírgula e espaço entre eles
 
-            String[] login = {usuario.getEmail(),usuario.getSenha(),usuario.getNome(),"3",usuario.getTelefone(), String.valueOf(usuario.getQntDevolucoes())};
+            String[] login = { usuario.getEmail(), usuario.getSenha(), usuario.getNome(), "1",
+                    usuario.getDepartamento() };
             String linhaFormatada = String.join(",", login);
             escritor.write(linhaFormatada);
 
@@ -440,21 +421,64 @@ public class Biblioteca {
         }
     }
 
-    
+    public static void addLoginBibliotecario(Bibliotecario usuario) {
+        // todo: escrever usuario no txt
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(login, true))) {
+            // Junta os elementos do array com vírgula e espaço entre eles
 
-    public static boolean limiteEmprestimos(String email) {
-        //dados
-        ArrayList<String[]> logins = lerLogin();
+            String[] login = { usuario.getEmail(), usuario.getSenha(), usuario.getNome(), "3", usuario.getTelefone(),
+                    String.valueOf(usuario.getQntDevolucoes()) };
+            String linhaFormatada = String.join(",", login);
+            escritor.write(linhaFormatada);
 
-        for(String[] login: logins){
-            if(login[0].equals(email)){
-                if(){
+            escritor.write(linhaFormatada); // Escreve a linha no arquivo
+            escritor.newLine(); // Pula para a próxima linha
 
+            System.out.println("Arquivo escrito com sucesso!");
+
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void addEmprestimo(Emprestimos emprestimo){
+        
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(historicoEmprestimo, true))) {
+            
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate data = emprestimo.getData(); 
+            String dataFormatada = data.format(formato); 
+
+            String[] historico = {emprestimo.getId(), emprestimo.getTitulo(), dataFormatada,
+            emprestimo.getEmail(), emprestimo.getStatus() };
+            String linhaFormatada = String.join(",", historico);
+            escritor.write(linhaFormatada);
+
+            escritor.write(linhaFormatada); 
+            escritor.newLine(); 
+
+            System.out.println("Arquivo escrito com sucesso!");
+
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean limiteEmprestimos(String email, int limiteEmprestimo) {
+        // dados
+        ArrayList<String[]> dados = lerDados();
+
+        for (String[] dado : dados) {
+            if (dado[0].equals(email)) {
+                if (Integer.parseInt(dado[1]) <= limiteEmprestimo) {
+                    return true;
                 }
-                return true;
+        
+
             }
         }
-        return false;
 
         return false;
     }
