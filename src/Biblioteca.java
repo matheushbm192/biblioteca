@@ -12,8 +12,24 @@ public class Biblioteca {
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
-    public static void menu(){
+   
+
+    
+    public static void menu(Object usuario){
         Scanner entrada = new Scanner(System.in);
+
+        String email = " ";
+        //fazer de limite de empréstimo
+
+        if (usuario instanceof Aluno) {
+            Aluno usuarioVez = (Aluno) usuario; // Converte para Aluno
+            email = usuarioVez.getEmail();
+            
+        } else if (usuario instanceof Professor) {
+            Professor usuarioVez = (Professor) usuario; // Converte para Professor
+            email = usuarioVez.getEmail();
+        }
+    
 
         System.out.println("Informe qual ação deseja fazer:");
         System.out.println("1- Realizar Empréstimo");//escrever a informação no arquivo dados
@@ -24,12 +40,12 @@ public class Biblioteca {
 
         switch (escolha) {
             case 1:
-                realizarEmprestimo();
+                realizarEmprestimo(email);
                 break;
             case 2:
 
                 boolean respostaValida = false;
-                while (respostaValida = false) {
+                while (!respostaValida) {
 
                     System.out.println("Para consultar um livro através do Id, digite 1.");
                     System.out.println("Para consultar um livro através do título, digite 2.");
@@ -60,36 +76,35 @@ public class Biblioteca {
                 break;
             default:
                 System.out.println("Opção inválida. Tente novamente!");
-                menu();
         }
     }
 
     public static void sair() {
         // atualizarInformacoes();
-        TelaInicio.inicio();
+        TelaInicio.login();
     }
 
     // passar id do usuario
     // alterar arquivo acervo;
-    public static void realizarEmprestimo() {
+    public static void realizarEmprestimo(String email) {
 
         Scanner entrada = new Scanner(System.in);
-        boolean bloqueado = usuarioBloqueado();
+        boolean bloqueado = usuarioBloqueado(email);
 
-        if (bloqueado = true) {
+        if (bloqueado) {
             System.out.println(
                     "Você está com atrasos na devolução, portanto, está bloqueado para pegar novos exemplares.");
         } else {
 
             boolean limite = limiteEmprestimos();
-            if (limite = true) {
+            if (limite) {
                 System.out.println(
                         "Seu limite de empréstimos já foi alcançado. Realize devolução para pegar novos livros.");
             } else {
 
                 boolean respostaValida = false;
                 boolean disponibilidade = false;
-                while (respostaValida = false) {
+                while (!respostaValida) {
 
                     System.out.println("Para realizar um empréstimo através do Id, digite 1.");
                     System.out.println("Para realizar um empréstimo através do título, digite 2.");
@@ -112,34 +127,21 @@ public class Biblioteca {
                         respostaValida = false;
                     }
 
-                    if (disponibilidade = false) {
+                    if (!disponibilidade) {
                         System.out.println("Não há mais exemplares para realizar empréstimo.");
                     } else {
-
-                        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(dados))) {
-
-                            for (String[] linha : atrasados) {
-                                System.out.println(Arrays.toString(linha));
-                                // Junta os elementos do array com vírgula e espaço entre eles
-                                String linhaFormatada = String.join(",", linha);
-                                System.out.println("1 " +linhaFormatada);
-                                escritor.write(linhaFormatada); // Escreve a linha no arquivo
-                                escritor.newLine(); // Pula para a próxima linha
-                            }
-                            System.out.println("Arquivo escrito com sucesso!");
-                
-                            } catch (IOException e) {
-                            System.out.println("Ocorreu um erro ao escrever no arquivo.");
-                            e.printStackTrace();
-                        }
+                        //chamar método que acresenta empréstimo no histórico 
                         //alterar a quantidade de livros no acervo
+                        }
+
+                       
                     }
 
                 }
             }
 
         }
-    }
+    
 
     public static ArrayList<Obra> lerAcervo() {
 
@@ -233,7 +235,7 @@ public class Biblioteca {
 
     }
 
-    public ArrayList<Emprestimos> lerHistoricoEmprestimos() {
+    public static ArrayList<Emprestimos> lerHistoricoEmprestimos() {
         ArrayList<String[]> valores = new ArrayList<>();
         ArrayList<Emprestimos> resultado = new ArrayList<>();
 
@@ -317,12 +319,12 @@ public class Biblioteca {
     }
 
     //arrumar para passar o usuario da vez(email);
-    public static boolean usuarioBloqueado() {
+    public static boolean usuarioBloqueado(String email) {
         gerarUsuariosBloqueados();
         ArrayList<String[]>linhas = lerUsuariosBloqueados();
 
         for(String[] linha: linhas){
-            if(linha[0].equals(linhas)){
+            if(linha[0].equals(email)){
                 return true;
             }
         }
@@ -350,6 +352,34 @@ public class Biblioteca {
         return valores;
     }
 
+    public static boolean validaUsuario(String email, String senha){
+        ArrayList<String[]>usuarios = lerLogin();
+
+        for(String[] usuario: usuarios){
+            if((usuario[0].equals(email)) && (usuario[1].equals(senha))){
+                return true;
+            }
+        }
+        return false;
+        
+
+    }
+
+    public static String[] retornaDados(String email){
+        ArrayList<String[]>usuarios = lerLogin();
+
+        for(String[] usuario: usuarios){
+            if(usuario[0].equals(email)){
+                return usuario;
+            }
+        }
+        return null;
+        /*for (String[] valor : valores) {
+            Emprestimos formataEmprestimo = new Emprestimos(valor[0], valor[1], LocalDate.parse(valor[2]), valor[3],
+                    Integer.parseInt(valor[4]), valor[5]);
+            resultado.add(formataEmprestimo);*/
+    }
+
     public static void addLogin(Usuario usuario, int tipo){
         //todo: escrever usuario no txt
 
@@ -358,10 +388,20 @@ public class Biblioteca {
         // não entendi esse!
     }
 
-    public static boolean limiteEmprestimos() {
-        // verifica qual é o tipo de usuario e se seu limite de emprestimos foi
-        // alcançado
-        // ( professor - 10; aluno - 2; )
+    public static boolean limiteEmprestimos(String email) {
+        //dados
+        ArrayList<String[]> logins = lerLogin();
+
+        for(String[] login: logins){
+            if(login[0].equals(email)){
+                if(){
+
+                }
+                return true;
+            }
+        }
+        return false;
+
         return false;
     }
 

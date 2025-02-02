@@ -11,7 +11,9 @@ public class Professor extends Usuario {
         this.departamento = departamento; 
     }
 
-    
+    public int getLimiteEmprestimo() {
+        return limiteEmprestimo;
+    }
     
     
 }

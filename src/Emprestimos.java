@@ -27,4 +27,7 @@ public class Emprestimos extends Obra{
     public void setData(LocalDate data) {
         this.data = data;
     }
+    public String getStatus() {
+        return status;
+    }
 }

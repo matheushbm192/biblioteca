@@ -10,8 +10,18 @@ public class Aluno extends Usuario {
         this.limiteEmprestimo = 2; 
     }
 
+    public Aluno(String nome, String email, String senha, String matricula){
+        super(nome, email, senha);
+        this.matricula = matricula;
+        this.limiteEmprestimo = 2; 
+    }
+
     @Override
     public String getEmail() {
         return super.getEmail();
+    }
+
+    public int getLimiteEmprestimo() {
+        return limiteEmprestimo;
     }
 }
