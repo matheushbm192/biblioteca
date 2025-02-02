@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Biblioteca {
@@ -83,8 +84,7 @@ public class Biblioteca {
         TelaInicio.login();
     }
 
-    // passar id do usuario
-    // alterar arquivo acervo;
+
     public static void realizarEmprestimo(String email, int limiteEmprestimo) {
 
         String id = " ";
@@ -137,7 +137,7 @@ public class Biblioteca {
                     if (!disponibilidade) {
                         System.out.println("Não há mais exemplares para realizar empréstimo.");
                     } else {
-                        //String id, String titulo, String email,int quantidade
+                        // String id, String titulo, String email,int quantidade
                         Emprestimos emprestimo = new Emprestimos(id, titulo, email, quantidade);
                         addEmprestimo(emprestimo);
                         // alterar a quantidade de livros no acervo
@@ -151,10 +151,41 @@ public class Biblioteca {
         }
 
     }
-    public static void alteraQuantAcervo(String id){
 
+    public static void alteraQuantAcervo(String id) {
 
+        List<String> linhaAtualizada = new ArrayList<>(); 
+
+        try (BufferedReader buffer = new BufferedReader(new FileReader(acervo))) {
+            String linha;
+
+            while ((linha = buffer.readLine()) != null) {
+                String[] dados = linha.split(","); 
+
+                if (dados[0].equals(id)) {
+                    int quantidadeAtual = Integer.parseInt(dados[2]); 
+                    dados[2] = String.valueOf(quantidadeAtual - 1); 
+                }
+
+                linhaAtualizada.add(String.join(",", dados));
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo");
+            return;
+        }
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(acervo))) {
+            for (String linha : linhaAtualizada) {
+                escritor.write(linha);
+                escritor.newLine();
+            }
+            System.out.println("Quantidade de exemplares atualizada com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao atualizar o arquivo");
+        }
     }
+
+    
 
     public static ArrayList<Obra> lerAcervo() {
 
@@ -442,21 +473,21 @@ public class Biblioteca {
         }
     }
 
-    public static void addEmprestimo(Emprestimos emprestimo){
-        
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(historicoEmprestimo, true))) {
-            
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate data = emprestimo.getData(); 
-            String dataFormatada = data.format(formato); 
+    public static void addEmprestimo(Emprestimos emprestimo) {
 
-            String[] historico = {emprestimo.getId(), emprestimo.getTitulo(), dataFormatada,
-            emprestimo.getEmail(), emprestimo.getStatus() };
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(historicoEmprestimo, true))) {
+
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate data = emprestimo.getData();
+            String dataFormatada = data.format(formato);
+
+            String[] historico = { emprestimo.getId(), emprestimo.getTitulo(), dataFormatada,
+                    emprestimo.getEmail(), emprestimo.getStatus() };
             String linhaFormatada = String.join(",", historico);
             escritor.write(linhaFormatada);
 
-            escritor.write(linhaFormatada); 
-            escritor.newLine(); 
+            escritor.write(linhaFormatada);
+            escritor.newLine();
 
             System.out.println("Arquivo escrito com sucesso!");
 
@@ -475,7 +506,6 @@ public class Biblioteca {
                 if (Integer.parseInt(dado[1]) <= limiteEmprestimo) {
                     return true;
                 }
-        
 
             }
         }
