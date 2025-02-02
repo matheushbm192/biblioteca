@@ -8,11 +8,16 @@ import java.util.UUID;
 
 public class Bibliotecario extends Usuario {
     String telefone;
-    int qntDevolucoes;
+    int qntDevolucoes = 0;
+    
 
     public Bibliotecario(String nome, String email, String senha, String telefone) {
         super(nome, email, senha);
         this.telefone = telefone;
+    }
+
+    public String getTelefone() {
+        return telefone;
     }
 
     public int getQntDevolucoes() {
@@ -125,7 +130,7 @@ public class Bibliotecario extends Usuario {
                 break;
             default:
                 System.out.println("Opção inválida. Tente novamente!");
-                menu();
+                
         }
     }
 
@@ -144,7 +149,7 @@ public class Bibliotecario extends Usuario {
             System.out.println("Informe o departamento ao qual está vinculado: ");
             String departamento = entrada.nextLine();
             Professor novoProfessor = new Professor(nome, email, senha, departamento);
-            Biblioteca.addLogin(novoProfessor, 1);
+            Biblioteca.addLoginProfessor(novoProfessor);
 
         } else if (tipo == 2) {
             // Aluno
@@ -153,24 +158,21 @@ public class Bibliotecario extends Usuario {
             System.out.println("Informe o curso ao qual está vinculado: ");
             String curso = entrada.nextLine();
             Aluno novoAluno = new Aluno(nome, email, senha, matricula, curso);
-            Biblioteca.addLogin(novoAluno, 2);
+            Biblioteca.addLoginAluno(novoAluno);
 
         } else {
             System.out.println("Informe o número de telefone: ");
             String telefone = entrada.nextLine();
             Bibliotecario novoBibliotecario = new Bibliotecario(nome, email, senha, telefone);
-            Biblioteca.addLogin(novoBibliotecario, 3);
+            Biblioteca.addLoginBibliotecario(novoBibliotecario);
         }
-
-        menu();
 
     }
 
     public void sair() {
 
         // salvar todos os registros feitos no dia
-        Biblioteca.atualizarInformacoes();
-        TelaInicio.inicio();
+       
     }
 
     public void registrarDevolucao(String email) {

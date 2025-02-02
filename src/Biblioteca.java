@@ -380,13 +380,67 @@ public class Biblioteca {
             resultado.add(formataEmprestimo);*/
     }
 
-    public static void addLogin(Usuario usuario, int tipo){
+    public static void addLoginAluno( Aluno usuario){
         //todo: escrever usuario no txt
+        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(login,true))) {
+                // Junta os elementos do array com vírgula e espaço entre eles
 
+            String[] login = {usuario.getEmail(),usuario.getSenha(),usuario.getNome(),"2",usuario.getMatricula(),usuario.getCurso()};
+            String linhaFormatada = String.join(",", login);
+            escritor.write(linhaFormatada);
+
+            escritor.write(linhaFormatada); // Escreve a linha no arquivo
+            escritor.newLine(); // Pula para a próxima linha
+
+            System.out.println("Arquivo escrito com sucesso!");
+
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
+        }
     }
-    public static void atualizarInformacoes() {
-        // não entendi esse!
+
+    public static void addLoginProfessor( Professor usuario){
+        //todo: escrever usuario no txt
+        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(login,true))) {
+            // Junta os elementos do array com vírgula e espaço entre eles
+
+            String[] login = {usuario.getEmail(),usuario.getSenha(),usuario.getNome(),"1",usuario.getDepartamento()};
+            String linhaFormatada = String.join(",", login);
+            escritor.write(linhaFormatada);
+
+            escritor.write(linhaFormatada); // Escreve a linha no arquivo
+            escritor.newLine(); // Pula para a próxima linha
+
+            System.out.println("Arquivo escrito com sucesso!");
+
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
+        }
     }
+
+    public static void addLoginBibliotecario( Bibliotecario usuario){
+        //todo: escrever usuario no txt
+        try(BufferedWriter escritor = new BufferedWriter(new FileWriter(login,true))) {
+            // Junta os elementos do array com vírgula e espaço entre eles
+
+            String[] login = {usuario.getEmail(),usuario.getSenha(),usuario.getNome(),"3",usuario.getTelefone(), String.valueOf(usuario.getQntDevolucoes())};
+            String linhaFormatada = String.join(",", login);
+            escritor.write(linhaFormatada);
+
+            escritor.write(linhaFormatada); // Escreve a linha no arquivo
+            escritor.newLine(); // Pula para a próxima linha
+
+            System.out.println("Arquivo escrito com sucesso!");
+
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
+        }
+    }
+
+    
 
     public static boolean limiteEmprestimos(String email) {
         //dados
