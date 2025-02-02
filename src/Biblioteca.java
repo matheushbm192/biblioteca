@@ -12,7 +12,7 @@ public class Biblioteca {
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
-    public static void menu(){
+    public static void menu(Usuario usuario){
         Scanner entrada = new Scanner(System.in);
 
         System.out.println("Informe qual ação deseja fazer:");
@@ -24,7 +24,7 @@ public class Biblioteca {
 
         switch (escolha) {
             case 1:
-                realizarEmprestimo();
+                realizarEmprestimo(usuario);
                 break;
             case 2:
 
@@ -60,7 +60,7 @@ public class Biblioteca {
                 break;
             default:
                 System.out.println("Opção inválida. Tente novamente!");
-                menu();
+                menu(usuario);
         }
     }
 
@@ -71,10 +71,10 @@ public class Biblioteca {
 
     // passar id do usuario
     // alterar arquivo acervo;
-    public static void realizarEmprestimo() {
+    public static void realizarEmprestimo(Usuario usuario) {
 
         Scanner entrada = new Scanner(System.in);
-        boolean bloqueado = usuarioBloqueado();
+        boolean bloqueado = usuarioBloqueado(usuario);
 
         if (bloqueado = true) {
             System.out.println(
@@ -317,12 +317,12 @@ public class Biblioteca {
     }
 
     //arrumar para passar o usuario da vez(email);
-    public static boolean usuarioBloqueado() {
+    public static boolean usuarioBloqueado(Usuario usuario) {
         gerarUsuariosBloqueados();
         ArrayList<String[]>linhas = lerUsuariosBloqueados();
 
         for(String[] linha: linhas){
-            if(linha[0].equals(linhas)){
+            if(linha[0].equals(usuario.getEmail())){
                 return true;
             }
         }
