@@ -10,6 +10,18 @@ public class Aluno extends Usuario {
         this.limiteEmprestimo = 2; 
     }
 
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public String getCurso() {
+        return curso;
+    }
+
+    public int getLimiteEmprestimo() {
+        return limiteEmprestimo;
+    }
+
     @Override
     public String getEmail() {
         return super.getEmail();
