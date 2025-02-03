@@ -37,13 +37,16 @@ public class Aluno extends Usuario {
 
     public  void menu(){
         Scanner entrada = new Scanner(System.in);
-
+        System.out.println();
+        System.out.println("----------------------------------------------------");
         System.out.println("Informe qual ação deseja fazer:");
         System.out.println("1- Realizar Empréstimo");//escrever a informação no arquivo dados
         System.out.println("2- Consultar Informações da obra");//feito
         System.out.println("3 - Sair");//feito
 
         int escolha = entrada.nextInt();
+        entrada.nextLine();
+        System.out.println();
 
         switch (escolha) {
             case 1:

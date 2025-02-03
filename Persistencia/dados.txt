@@ -1,1 +1,2 @@
 email,2,livro(nome)-01/01/2025,livro-02/01/2025
+paola@,0

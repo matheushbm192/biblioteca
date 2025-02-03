@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        //Biblioteca.gerarUsuariosBloqueados();
+        Biblioteca.gerarUsuariosBloqueados();
         Usuario usuarioVez = TelaInicio.login();
 
         if(usuarioVez instanceof Professor){

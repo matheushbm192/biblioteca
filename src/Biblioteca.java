@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Biblioteca {
-    public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
+    /*public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
-    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
+    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";*/
 
 
-   /* public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
+    public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\paola\\biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\paola\\biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\paola\\biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\paola\\biblioteca\\Persistencia\\login.txt";
-    */
+    
     public static <T extends Usuario> void realizarEmprestimo(T usuario) {
 
         String id = " ";
@@ -265,14 +265,12 @@ public class Biblioteca {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(usuarioBloqueado))) {
 
             for (String[] linha : atrasados) {
-                // Junta os elementos do array com vírgula e espaço entre eles
                 String linhaFormatada = String.join(",", linha);
 
-                escritor.write(linhaFormatada); // Escreve a linha no arquivo
-                escritor.newLine(); // Pula para a próxima linha
+                escritor.write(linhaFormatada); 
+                escritor.newLine(); 
             }
 
-            System.out.println("Arquivo escrito com sucesso!");
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
             e.printStackTrace();
@@ -280,7 +278,7 @@ public class Biblioteca {
     }
 
     public static boolean usuarioBloqueado(String email) {
-        //gerarUsuariosBloqueados();
+        gerarUsuariosBloqueados();
         ArrayList<String[]> linhas = lerUsuariosBloqueados();
 
         for (String[] linha : linhas) {
@@ -502,68 +500,64 @@ public class Biblioteca {
         }
     }
 
-    public static void registrarDevolucao(String email, String nomeLivro){
-
-    ArrayList<String> linhasAtualizadas = new ArrayList<>();
-
-    try (BufferedReader leitor = new BufferedReader(new FileReader(dados))) {
-        String linha;
-
-        while ((linha = leitor.readLine()) != null) {
-            String[] dados = linha.split(",");
-
-            if (dados[0].equals(email)) {
-
-                String[] livros = Arrays.copyOfRange(dados, 2, dados.length);
-
-                boolean livroEncontrado = false;
-
-                ArrayList<String> livrosAtualizados = new ArrayList<>();
-
-                for (String livro : livros) {
-                    if (livro.equals(nomeLivro)) {
-                        livroEncontrado = true;
+    public static void registrarDevolucao(String email, String nomeLivro) {
+        ArrayList<String> linhasAtualizadas = new ArrayList<>();
+    
+        try (BufferedReader leitor = new BufferedReader(new FileReader(dados))) {
+            String linha;
+    
+            while ((linha = leitor.readLine()) != null) {
+                String[] dados = linha.split(",");
+    
+                if (dados[0].equals(email)) { 
+                    String[] livros = Arrays.copyOfRange(dados, 2, dados.length);
+    
+                    boolean livroEncontrado = false;
+                    ArrayList<String> livrosAtualizados = new ArrayList<>();
+    
+                    for (String livro : livros) {
+                        String tituloLivro = livro.split("-")[0];
+    
+                        if (tituloLivro.equals(nomeLivro)) {
+                            livroEncontrado = true; 
+                        } else {
+                            livrosAtualizados.add(livro); 
+                        }
+                    }
+    
+                    if (livroEncontrado) {
+                        int quantidadeLivros = livrosAtualizados.size();
+                        dados[1] = String.valueOf(quantidadeLivros);
+    
+                        
+                        String novaLinha = dados[0] + "," + dados[1] + 
+                                           (quantidadeLivros > 0 ? "," + String.join(",", livrosAtualizados) : "");
+                        linhasAtualizadas.add(novaLinha);
                     } else {
-                        livrosAtualizados.add(livro);
+                        System.out.println("Livro não encontrado");
+                        linhasAtualizadas.add(linha); 
                     }
-                }
-
-
-                if (livroEncontrado) {
-
-                    int quantidadeLivros = livrosAtualizados.size();
-                    dados[1] = String.valueOf(quantidadeLivros);
-
-                    dados[2] = String.join(",", livrosAtualizados);
-
-                    if (quantidadeLivros == 0) {
-                        dados[1] = "0";
-                        dados[2] = "";
-                    }
-                }else{
-                    System.out.println("Livro não encontrado");
+                } else {
+                    linhasAtualizadas.add(linha);
                 }
             }
-
-            linhasAtualizadas.add(String.join(",", dados));
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo");
+            return;
         }
-
-    } catch (IOException e) {
-        System.out.println("Erro ao ler o arquivo");
-        return;
-    }
-
-    try (BufferedWriter escritor = new BufferedWriter(new FileWriter(dados))) {
-        for (String linha : linhasAtualizadas) {
-            escritor.write(linha);
-            escritor.newLine();
+    
+        
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(dados))) {
+            for (String linha : linhasAtualizadas) {
+                escritor.write(linha);
+                escritor.newLine();
+            }
+            System.out.println("Devolução realizada com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao atualizar o arquivo");
         }
-        System.out.println("Devolução realizada com sucesso!");
-    } catch (IOException e) {
-        System.out.println("Erro ao atualizar o arquivo");
     }
-}
-
+    
     public static boolean limiteEmprestimos(String email, int limiteEmprestimo) {
         ArrayList<String[]> dados = lerDados();
      
