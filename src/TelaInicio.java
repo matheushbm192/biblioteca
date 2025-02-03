@@ -3,8 +3,7 @@ import java.util.Scanner;
 
 public class TelaInicio {
 
-    
-    public static  Usuario login() {
+    public static Usuario login() {
         ArrayList<String[]> quantidade = Biblioteca.lerLogin();
         System.out.println(quantidade.size());
         if (quantidade.size() != 0) {
@@ -24,8 +23,6 @@ public class TelaInicio {
             System.out.println(validaUsuario);
             if (validaUsuario) {
                 String[] usuario = Biblioteca.retornaDados(email);
-
-
 
                 if (usuario[3].equals("1")) {
                     System.out.println("Login realizado com sucesso!\n");
@@ -62,7 +59,7 @@ public class TelaInicio {
         System.out.println("Informe o email: ");
         String email = entrada.nextLine();
         entrada.nextLine();
-        System.out.println(" Informe a senha: ");
+        System.out.println("Usuário, digite a senha: ");
         String senha = entrada.nextLine();
         entrada.nextLine();
         System.out.println("Informe o número de telefone: ");

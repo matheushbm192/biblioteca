@@ -78,8 +78,10 @@ public class Bibliotecario extends Usuario {
             case 2:
                 System.out.println("Informe o email do usuário que está realizando a devolução: ");
                 String email = entrada.nextLine();
+                entrada.nextLine();
                 System.out.println("Informe o nome do livro que está sendo devolvido: ");
                 String nomeLivro = entrada.nextLine();
+                entrada.nextLine();
                 chamarBiblioteca(email, nomeLivro);
                 break;
             case 3:
@@ -103,12 +105,14 @@ public class Bibliotecario extends Usuario {
                     if (resposta == 1) {
                         System.out.println("Informe o Id do livro que deseja consultar: ");
                         String id = entrada.nextLine();
+                        entrada.nextLine();
                         Obra obra = Biblioteca.consultarObraId(id);
                         Biblioteca.imprimirResultadoConsulta(obra);
                         respostaValida = true;
                     } else if (resposta == 2) {
                         System.out.println("Informe o título do livro que deseja consultar: ");
                         String titulo = entrada.nextLine();
+                        entrada.nextLine();
                         Obra obra = Biblioteca.consultarObraTitulo(titulo);
                         Biblioteca.imprimirResultadoConsulta(obra);
 
@@ -134,15 +138,19 @@ public class Bibliotecario extends Usuario {
         Scanner entrada = new Scanner(System.in);
         System.out.println("Informe o nome do usuário: ");
         String nome = entrada.nextLine();
+        entrada.nextLine();
         System.out.println("Informe o email: ");
         String email = entrada.nextLine();
+        entrada.nextLine();
         System.out.println("Usuário, digite a senha: ");
         String senha = entrada.nextLine();
+        entrada.nextLine();
 
         if (tipo == 1) {
             // Professor
             System.out.println("Informe o departamento ao qual está vinculado: ");
             String departamento = entrada.nextLine();
+            entrada.nextLine();
             Professor novoProfessor = new Professor(nome, email, senha, departamento);
             Biblioteca.addLoginProfessor(novoProfessor);
 
@@ -150,14 +158,17 @@ public class Bibliotecario extends Usuario {
             // Aluno
             System.out.println("Informe a matrícula: ");
             String matricula = entrada.nextLine();
+            entrada.nextLine();
             System.out.println("Informe o curso ao qual está vinculado: ");
             String curso = entrada.nextLine();
+            entrada.nextLine();
             Aluno novoAluno = new Aluno(nome, email, senha, matricula, curso);
             Biblioteca.addLoginAluno(novoAluno);
 
         } else {
             System.out.println("Informe o número de telefone: ");
             String telefone = entrada.nextLine();
+            entrada.nextLine();
             Bibliotecario novoBibliotecario = new Bibliotecario(nome, email, senha, telefone);
             Biblioteca.addLoginBibliotecario(novoBibliotecario);
         }

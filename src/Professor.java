@@ -38,16 +38,18 @@ public class Professor extends Usuario {
                     System.out.println("Para consultar um livro através do Id, digite 1.");
                     System.out.println("Para consultar um livro através do título, digite 2.");
                     int resposta = entrada.nextInt();
-
+                    entrada.nextLine();
                     if (resposta == 1) {
-                        System.out.println("Informe o Id do livro que deseja consultar: ");
+                        System.out.println("Informe4 o Id do livro que deseja consultar: ");
                         String id = entrada.nextLine();
+                        System.out.println("Debug id: "+id);
                         Obra obra = Biblioteca.consultarObraId(id);
                         Biblioteca.imprimirResultadoConsulta(obra);
                         break;
                     } else if (resposta == 2) {
                         System.out.println("Informe o título do livro que deseja consultar: ");
                         String titulo = entrada.nextLine();
+                        entrada.nextLine();
                         Obra obra = Biblioteca.consultarObraTitulo(titulo);
                         Biblioteca.imprimirResultadoConsulta(obra);
                         break;

@@ -12,11 +12,11 @@ public class Aluno extends Usuario {
 
     }
 
-//    public Aluno(String nome, String email, String senha, String matricula){
-//        super(nome, email, senha);
-//        this.matricula = matricula;
-//
-//    }
+    public Aluno(String nome, String email, String senha, String matricula){
+       super(nome, email, senha);
+        this.matricula = matricula;
+
+    }
 
     public String getMatricula() {
         return matricula;
@@ -55,16 +55,20 @@ public class Aluno extends Usuario {
                     System.out.println("Para consultar um livro através do Id, digite 1.");
                     System.out.println("Para consultar um livro através do título, digite 2.");
                     int resposta = entrada.nextInt();
+                    entrada.nextLine();
+
 
                     if (resposta == 1) {
-                        System.out.println("Informe o Id do livro que deseja consultar: ");
+                        System.out.println("Informess o Id do livro que deseja consultar: ");
                         String id = entrada.nextLine();
+                        System.out.println("Debug id: "+id);
                         Obra obra = Biblioteca.consultarObraId(id);
                         Biblioteca.imprimirResultadoConsulta(obra);
                         break;
                     } else if (resposta == 2) {
                         System.out.println("Informe o título do livro que deseja consultar: ");
                         String titulo = entrada.nextLine();
+                        entrada.nextLine();
                         Obra obra = Biblioteca.consultarObraTitulo(titulo);
                         Biblioteca.imprimirResultadoConsulta(obra);
                         break;

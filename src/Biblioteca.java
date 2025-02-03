@@ -8,12 +8,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Biblioteca {
-    public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
+   /*  public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
-    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
+    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";*/
 
+
+    public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
+    public static  String historicoEmprestimo = "C:\\Users\\paola\\biblioteca\\Persistencia\\historicoEmprestimos.txt";
+    public static  String usuarioBloqueado = "C:\\Users\\paola\\biblioteca\\Persistencia\\usariosBloqueados.txt";
+    public static String dados = "C:\\Users\\paola\\biblioteca\\Persistencia\\dados.txt";
+    public static String login = "C:\\Users\\paola\\biblioteca\\Persistencia\\login.txt";
 
 
 
@@ -25,11 +31,12 @@ public class Biblioteca {
     }
 
 
-    public static <T extends  Usuario> void realizarEmprestimo(T usuario) {
+    public static <T extends Usuario> void realizarEmprestimo(T usuario) {
 
         String id = " ";
         String titulo = " ";
         int quantidade = 0;
+        String email = usuario.getEmail();
 
         Scanner entrada = new Scanner(System.in);
         boolean bloqueado = usuarioBloqueado(usuario.getEmail());
@@ -56,6 +63,7 @@ public class Biblioteca {
                     if (resposta == 1) {
                         System.out.println("Informe o Id do livro que deseja consultar: ");
                         id = entrada.nextLine();
+                        entrada.nextLine();
                         Obra obra = consultarObraId(id);
                         titulo = obra.getTitulo();
                         quantidade = obra.getQuantidade();
@@ -64,6 +72,7 @@ public class Biblioteca {
                     } else if (resposta == 2) {
                         System.out.println("Informe o título do livro que deseja consultar: ");
                         titulo = entrada.nextLine();
+                        entrada.nextLine();
                         Obra obra = consultarObraTitulo(titulo);
                         id = obra.getId();
                         quantidade = obra.getQuantidade();
@@ -127,22 +136,20 @@ public class Biblioteca {
     }
 
     public static ArrayList<Obra> lerAcervo() {
-
-        ArrayList<String[]> valores = new ArrayList<String[]>();
-        ArrayList<Obra> resultado = new ArrayList<Obra>();
-
-        try {
-            BufferedReader buffer = new BufferedReader(new FileReader(acervo));
+        ArrayList<Obra> resultado = new ArrayList<>();
+    
+        try (BufferedReader buffer = new BufferedReader(new FileReader(acervo))) {
             String linha;
             while ((linha = buffer.readLine()) != null) {
-                // todo checar se roda sem o split
-                valores.add(linha.split("\n"));
-            }
-
-            for (String[] valor : valores) {
-                String[] separado = valor[0].split(",");
-                Obra formataObra = new Obra(separado[0], separado[1], Integer.parseInt(separado[2]));
-                resultado.add(formataObra);
+                String[] separado = linha.split(",");
+                
+                if (separado.length >= 3) {
+                    Obra formataObra = new Obra(separado[0], separado[1], Integer.parseInt(separado[2]));
+                    resultado.add(formataObra);
+                    
+                } else {
+                    System.out.println("Erro ao processar linha: " + linha);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -183,12 +190,15 @@ public class Biblioteca {
 
     public static Obra consultarObraId(String id) {
         for (Obra obra : lerAcervo()) {
-            if (obra.getId().equals(id)) {
+            
+            if (obra.getId().trim().equals(id.trim())) { 
+                System.out.println("Encontrado: " + obra.getTitulo());
                 return obra;
             }
-        }
-        return null;
+        
     }
+    return null;
+}
 
     public static Obra consultarObraTitulo(String nomeObra) {
         for (Obra obra : lerAcervo()) {
