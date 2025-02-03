@@ -187,6 +187,7 @@ public class Bibliotecario extends Usuario {
         Biblioteca.atualizaStatus(email, nomeLivro);
         Biblioteca.gerarUsuariosBloqueados();
         acrescentarDevolucao();
+        Biblioteca.atualizarAcervo(nomeLivro);
 
     }
 

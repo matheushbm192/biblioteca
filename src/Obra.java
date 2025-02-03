@@ -17,6 +17,11 @@ public class Obra {
         return this.quantidade;
     }
 
+    public int acrescentarQuantidade() {
+        this.quantidade += 1;
+        return this.quantidade;
+    }
+
     public String getId() {
         return this.id;
     }
