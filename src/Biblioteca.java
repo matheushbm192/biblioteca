@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Biblioteca {
-   /*  public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
+    public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
-    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";*/
+    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
 
 
-    public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
+   /* public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\paola\\biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\paola\\biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\paola\\biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\paola\\biblioteca\\Persistencia\\login.txt";
-
+    */
     public static <T extends Usuario> void realizarEmprestimo(T usuario) {
 
         String id = " ";
@@ -244,40 +244,35 @@ public class Biblioteca {
 
     public static void gerarUsuariosBloqueados() {
         ArrayList<String[]> linhas = lerDados();
-
         ArrayList<String[]> livros = new ArrayList<>();
-
         ArrayList<String[]> atrasados = new ArrayList<>();
-
         LocalDate hoje = LocalDate.now();
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         for (String[] linha : linhas) {
 
             String[] valores = linha[0].split(",");
 
             for (int i = 2; i < Integer.parseInt(valores[1]) + 2; i++) {
                 String[] resultado = valores[i].split("-");
-                livros.add(resultado);
-            }
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            for (String[] livro : livros) {
-                long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(livro[1], formatter));
-                
+                long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(resultado[1], formatter));
                 if ((diasDiferenca * -1) > 7) {
-                    String[] usuarioAtrasado = { valores[0], livro[0] + "-" + livro[1] };
+                    String[] usuarioAtrasado = { valores[0], resultado[0] + "-" + resultado[1] };
                     atrasados.add(usuarioAtrasado);
                 }
             }
         }
+
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(usuarioBloqueado))) {
 
             for (String[] linha : atrasados) {
                 // Junta os elementos do array com vírgula e espaço entre eles
                 String linhaFormatada = String.join(",", linha);
+
                 escritor.write(linhaFormatada); // Escreve a linha no arquivo
                 escritor.newLine(); // Pula para a próxima linha
             }
 
+            System.out.println("Arquivo escrito com sucesso!");
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
             e.printStackTrace();
@@ -402,8 +397,6 @@ public class Biblioteca {
                     emprestimo.getEmail(), emprestimo.getStatus() };
             String linhaFormatada = String.join(",", historico);
             escritor.write(linhaFormatada);
-
-            escritor.write(linhaFormatada);
             escritor.newLine();
 
 
@@ -416,54 +409,54 @@ public class Biblioteca {
     public static void addEmprestDados(Emprestimos emprestimo){
         //email,2,livro(nome)-01/01/2025,livro-02/01/2025
 
-    List<String> linhasAtualizadas = new ArrayList<>();
-    boolean usuarioEncontrado = false;
+        List<String> linhasAtualizadas = new ArrayList<>();
+        boolean usuarioEncontrado = false;
 
-    try (BufferedReader leitor = new BufferedReader(new FileReader(dados))) {
-        String linha;
+        try (BufferedReader leitor = new BufferedReader(new FileReader(dados))) {
+            String linha;
 
-        while ((linha = leitor.readLine()) != null) {
-            String[] dados = linha.split(",");
+            while ((linha = leitor.readLine()) != null) {
+                String[] dados = linha.split(",");
 
-            if (dados[0].equals(emprestimo.getEmail())) {
-                usuarioEncontrado = true;
+                if (dados[0].equals(emprestimo.getEmail())) {
+                    usuarioEncontrado = true;
 
-                int quantidadeLivros = Integer.parseInt(dados[1]) + 1;
-                dados[1] = String.valueOf(quantidadeLivros);
+                    int quantidadeLivros = Integer.parseInt(dados[1]) + 1;
+                    dados[1] = String.valueOf(quantidadeLivros);
 
-                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                String novoLivro = emprestimo.getTitulo() + "-" + LocalDate.now().format(formato);
-                List<String> novaLinha = new ArrayList<>(Arrays.asList(dados));
-                novaLinha.add(novoLivro);
+                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    String novoLivro = emprestimo.getTitulo() + "-" + LocalDate.now().format(formato);
+                    List<String> novaLinha = new ArrayList<>(Arrays.asList(dados));
+                    novaLinha.add(novoLivro);
 
-                linhasAtualizadas.add(String.join(",", novaLinha));
-            } else {
-                linhasAtualizadas.add(linha);
+                    linhasAtualizadas.add(String.join(",", novaLinha));
+                } else {
+                    linhasAtualizadas.add(linha);
+                }
             }
+
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo");
+            return;
         }
 
-    } catch (IOException e) {
-        System.out.println("Erro ao ler o arquivo");
-        return;
-    }
-
-    if (!usuarioEncontrado) {
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String dataDevolucao = LocalDate.now().format(formato);
-        String novaLinha = emprestimo.getEmail() + ",1," + emprestimo.getTitulo() + "-" + dataDevolucao;
-        linhasAtualizadas.add(novaLinha);
-    }
-
-    try (BufferedWriter escritor = new BufferedWriter(new FileWriter(dados))) {
-        for (String linha : linhasAtualizadas) {
-            escritor.write(linha);
-            escritor.newLine();
+        if (!usuarioEncontrado) {
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataDevolucao = LocalDate.now().format(formato);
+            String novaLinha = emprestimo.getEmail() + ",1," + emprestimo.getTitulo() + "-" + dataDevolucao;
+            linhasAtualizadas.add(novaLinha);
         }
-        System.out.println("Empréstimo registrado com sucesso!");
-    } catch (IOException e) {
-        System.out.println("Erro ao atualizar o arquivo");
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(dados))) {
+            for (String linha : linhasAtualizadas) {
+                escritor.write(linha);
+                escritor.newLine();
+            }
+            System.out.println("Empréstimo registrado com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao atualizar o arquivo");
+        }
     }
-}
 
     public static void atualizaStatus(String email, String nomeLivro){
     List<String> linhaAtualizada = new ArrayList<>();
@@ -504,9 +497,9 @@ public class Biblioteca {
             escritor.newLine();
         }
         System.out.println("Status do empréstimo atualizado para 'entregue'!");
-    } catch (IOException e) {
-        System.out.println("Erro ao atualizar o arquivo");
-    }
+        } catch (IOException e) {
+            System.out.println("Erro ao atualizar o arquivo");
+        }
     }
 
     public static void registrarDevolucao(String email, String nomeLivro){
