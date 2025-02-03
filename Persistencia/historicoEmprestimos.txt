@@ -1,2 +1,4 @@
 id,titulo,data,usuario.email,status
 1,Renascer de Mar,03/02/2025,paola@,Entregue
+2,Renascer de Horizonte,03/02/2025,paola@,Emprestado
+3,Horizonte de Aventura,03/02/2025,paola@,Entregue
