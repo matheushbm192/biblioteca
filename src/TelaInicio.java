@@ -8,19 +8,17 @@ public class TelaInicio {
         System.out.println(quantidade.size());
         if (quantidade.size() != 0) {
             Scanner entrada = new Scanner(System.in);
+
             System.out.println("Bem vindo a biblioteca!");
             System.out.println();
             System.out.println("Realize seu login abaixo.");
             System.out.println("Email: ");
             String email = entrada.nextLine();
-            entrada.nextLine();
             System.out.println("Senha: ");
             String senha = entrada.nextLine();
-            entrada.nextLine();
-            System.out.println(email);
-            System.out.println(senha);
+
             boolean validaUsuario = Biblioteca.validaUsuario(email, senha);
-            System.out.println(validaUsuario);
+
             if (validaUsuario) {
                 String[] usuario = Biblioteca.retornaDados(email);
 

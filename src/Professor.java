@@ -65,7 +65,7 @@ public class Professor extends Usuario {
         this.menu();
     }
     public static void sair(){
-        Main.main();
+        Main.main(new String[] {});
     }
 
 }

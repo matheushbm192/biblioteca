@@ -49,6 +49,7 @@ public class Biblioteca {
                     System.out.println("Para realizar um empréstimo através do Id, digite 1.");
                     System.out.println("Para realizar um empréstimo através do título, digite 2.");
                     int resposta = entrada.nextInt();
+                    entrada.nextLine();
 
                     if (resposta == 1) {
                         System.out.println("Informe o Id do livro que deseja consultar: ");

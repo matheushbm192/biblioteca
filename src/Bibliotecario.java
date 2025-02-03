@@ -178,7 +178,7 @@ public class Bibliotecario extends Usuario {
 
     public void sair() {
 
-        Main.main();
+        Main.main(new String[] {});
        
     }
 

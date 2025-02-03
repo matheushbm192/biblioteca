@@ -59,7 +59,7 @@ public class Aluno extends Usuario {
 
 
                     if (resposta == 1) {
-                        System.out.println("Informess o Id do livro que deseja consultar: ");
+                        System.out.println("Informes o Id do livro que deseja consultar: ");
                         String id = entrada.nextLine();
                         System.out.println("Debug id: "+id);
                         Obra obra = Biblioteca.consultarObraId(id);
@@ -86,7 +86,7 @@ public class Aluno extends Usuario {
     }
 
     public static void sair(){
-        Main.main();
+        Main.main(new String[] {});
     }
 
 }
