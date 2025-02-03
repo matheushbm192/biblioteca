@@ -21,11 +21,7 @@ public class Biblioteca {
     public static String dados = "C:\\Users\\paola\\biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\paola\\biblioteca\\Persistencia\\login.txt";
 
-
-
-
-
-    public static void sair() {
+    public static void sair(){
         // atualizarInformacoes();
         TelaInicio.login();
     }
@@ -87,7 +83,7 @@ public class Biblioteca {
                         System.out.println("Não há mais exemplares para realizar empréstimo.");
                     } else {
                         // String id, String titulo, String email,int quantidade
-                        Emprestimos emprestimo = new Emprestimos(id, titulo, email, quantidade);
+                        Emprestimos emprestimo = new Emprestimos(id, titulo, usuario.getEmail(), quantidade);
                         addEmprestimoHist(emprestimo);
                         addEmprestDados(emprestimo);
                         // alterar a quantidade de livros no acervo

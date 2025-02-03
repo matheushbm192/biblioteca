@@ -26,11 +26,12 @@ public class TelaInicio {
 
                 if (usuario[3].equals("1")) {
                     System.out.println("Login realizado com sucesso!\n");
-                    return new Aluno(usuario[2], usuario[0], usuario[1], usuario[4], usuario[5]);
+                    return new Professor(usuario[2], usuario[0], usuario[1], usuario[4]);
 
                 } else if (usuario[3].equals("2")) {
                     System.out.println("Login realizado com sucesso!\n");
-                    return new Professor(usuario[2], usuario[0], usuario[1], usuario[4]);
+                    return new Aluno(usuario[2], usuario[0], usuario[1], usuario[4], usuario[5]);
+
 
                 } else {
                     System.out.println("Login realizado com sucesso!\n");
