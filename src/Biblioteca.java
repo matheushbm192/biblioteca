@@ -21,12 +21,6 @@ public class Biblioteca {
     public static String dados = "C:\\Users\\paola\\biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\paola\\biblioteca\\Persistencia\\login.txt";
 
-    public static void sair(){
-        // atualizarInformacoes();
-        TelaInicio.login();
-    }
-
-
     public static <T extends Usuario> void realizarEmprestimo(T usuario) {
 
         String id = " ";

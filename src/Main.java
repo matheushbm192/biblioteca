@@ -11,9 +11,9 @@ public class Main {
         if (usuarioVez instanceof Aluno){
             System.out.println("Aluno");
         }
-        while(true){
+        
             usuarioVez.menu();
-        }
+        
 
 
     }

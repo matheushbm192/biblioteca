@@ -132,6 +132,7 @@ public class Bibliotecario extends Usuario {
                 System.out.println("Opção inválida. Tente novamente!");
                 
         }
+        this.menu();
     }
 
     public void cadastrarUsuario(int tipo) {
@@ -177,8 +178,7 @@ public class Bibliotecario extends Usuario {
 
     public void sair() {
 
-        // chamar login;
-        TelaInicio.login();
+        Main.main();
        
     }
 

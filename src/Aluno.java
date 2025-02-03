@@ -64,6 +64,7 @@ public class Aluno extends Usuario {
                         System.out.println("Debug id: "+id);
                         Obra obra = Biblioteca.consultarObraId(id);
                         Biblioteca.imprimirResultadoConsulta(obra);
+                    
                         break;
                     } else if (resposta == 2) {
                         System.out.println("Informe o título do livro que deseja consultar: ");
@@ -76,10 +77,16 @@ public class Aluno extends Usuario {
                 }
                 break;
             case 3:
-                Biblioteca.sair();
+                sair();
                 break;
             default:
                 System.out.println("Opção inválida. Tente novamente!");
         }
+        this.menu();
     }
+
+    public static void sair(){
+        Main.main();
+    }
+
 }

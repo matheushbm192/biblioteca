@@ -57,10 +57,15 @@ public class Professor extends Usuario {
                 }
                 break;
             case 3:
-                Biblioteca.sair();
+                sair();
                 break;
             default:
                 System.out.println("Opção inválida. Tente novamente!");
         }
+        this.menu();
     }
+    public static void sair(){
+        Main.main();
+    }
+
 }
