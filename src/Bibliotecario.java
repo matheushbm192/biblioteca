@@ -176,10 +176,11 @@ public class Bibliotecario extends Usuario {
 
     }
 
+
     public void sair() {
 
         Main.main(new String[] {});
-       
+
     }
 
     public void chamarBiblioteca(String email, String nomeLivro) {

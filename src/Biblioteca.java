@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Biblioteca {
-   /*  public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
+    public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
-    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";*/
+    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
 
 
-    public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
+   /* public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\paola\\biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\paola\\biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\paola\\biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\paola\\biblioteca\\Persistencia\\login.txt";
-
+    */
     public static <T extends Usuario> void realizarEmprestimo(T usuario) {
 
         String id = " ";
@@ -248,45 +248,35 @@ public class Biblioteca {
 
     public static void gerarUsuariosBloqueados() {
         ArrayList<String[]> linhas = lerDados();
-
         ArrayList<String[]> livros = new ArrayList<>();
-
         ArrayList<String[]> atrasados = new ArrayList<>();
-
         LocalDate hoje = LocalDate.now();
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         for (String[] linha : linhas) {
 
             String[] valores = linha[0].split(",");
-            System.out.println(valores[0]);
 
             for (int i = 2; i < Integer.parseInt(valores[1]) + 2; i++) {
                 String[] resultado = valores[i].split("-");
-                livros.add(resultado);
-            }
-            System.out.println(Arrays.toString(livros.getFirst()));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            for (String[] livro : livros) {
-                long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(livro[1], formatter));
-                System.out.println(diasDiferenca);
+                long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(resultado[1], formatter));
                 if ((diasDiferenca * -1) > 7) {
-                    String[] usuarioAtrasado = { valores[0], livro[0] + "-" + livro[1] };
+                    String[] usuarioAtrasado = { valores[0], resultado[0] + "-" + resultado[1] };
                     atrasados.add(usuarioAtrasado);
                 }
             }
         }
+
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(usuarioBloqueado))) {
 
             for (String[] linha : atrasados) {
-                System.out.println(Arrays.toString(linha));
                 // Junta os elementos do array com vírgula e espaço entre eles
                 String linhaFormatada = String.join(",", linha);
-                System.out.println("1 " + linhaFormatada);
+
                 escritor.write(linhaFormatada); // Escreve a linha no arquivo
                 escritor.newLine(); // Pula para a próxima linha
             }
-            System.out.println("Arquivo escrito com sucesso!");
 
+            System.out.println("Arquivo escrito com sucesso!");
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
             e.printStackTrace();
