@@ -229,6 +229,7 @@ public class Bibliotecario extends Usuario {
         Biblioteca.gerarUsuariosBloqueados();
         //acresenta mais uma devolução no histórico do bibliotecário 
         acrescentarDevolucao();
+        Biblioteca.atualizarAcervo(nomeLivro);
 
     }
 

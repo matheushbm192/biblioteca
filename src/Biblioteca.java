@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Biblioteca {
-    /*public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
+    public static String acervo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\dados.txt";
-    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";*/
+    public static String login = "C:\\Users\\55319\\Desktop\\TP3\\Biblioteca\\Persistencia\\login.txt";
 
 
-    public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
+    /*public static String acervo = "C:\\Users\\paola\\biblioteca\\Persistencia\\acervo.csv";
     public static  String historicoEmprestimo = "C:\\Users\\paola\\biblioteca\\Persistencia\\historicoEmprestimos.txt";
     public static  String usuarioBloqueado = "C:\\Users\\paola\\biblioteca\\Persistencia\\usariosBloqueados.txt";
     public static String dados = "C:\\Users\\paola\\biblioteca\\Persistencia\\dados.txt";
     public static String login = "C:\\Users\\paola\\biblioteca\\Persistencia\\login.txt";
-    
+    */
     public static <T extends Usuario> void realizarEmprestimo(T usuario) {
 
         String id = " ";
@@ -596,6 +596,34 @@ public class Biblioteca {
                escritor.write(login[0]);
                escritor.newLine(); // Pula para a próxima linha
            }
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void atualizarAcervo(String nomeLivro) {
+        ArrayList<Obra> acervos = lerAcervo();
+        for(int i = 0; i < acervos.size(); i++){
+
+
+            if(acervos.get(i).getTitulo().equals(nomeLivro)){
+                Obra livro = new Obra(acervos.get(i).getId(),acervos.get(i).getTitulo(),acervos.get(i).acrescentarQuantidade());
+
+                acervos.set(i,livro);
+                break;
+            }
+
+        }
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(acervo))) {
+            // Junta os elementos do array com vírgula e espaço entre eles
+            for(Obra obra  : acervos){
+                String[] linha = {obra.getId(),obra.getTitulo(), String.valueOf(obra.getQuantidade())};
+                String[] linhaFormatada = new String[1];
+                linhaFormatada[0] = String.join(",", linha);
+                escritor.write(linhaFormatada[0]);
+                escritor.newLine(); // Pula para a próxima linha
+            }
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
             e.printStackTrace();

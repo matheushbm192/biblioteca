@@ -6,7 +6,7 @@ public class Main {
         Usuario usuarioVez = TelaInicio.login();
             //chama menu de acordo com o usuário retornado
             usuarioVez.menu();
-        }
-
-
     }
+
+
+}
