@@ -40,11 +40,11 @@ public class Bibliotecario extends Usuario {
         Scanner entrada = new Scanner(System.in);
 
         System.out.println("Informe qual ação deseja fazer:");
-        System.out.println("1- Cadastrar Usuário");// adicionar no arquivo
+        System.out.println("1- Cadastrar Usuário");//feito
         System.out.println("2- Registrar devolução");//aletrar Status no arquivo histórico
         System.out.println("3- Desbolquar usuário");//feito
         System.out.println("4- Lista de obras emprestadas");//feito
-        System.out.println("5- Lista de usuários com atraso nos empréstimos");// feito
+        System.out.println("5- Lista de usuários com atraso nos empréstimos");//feito
         System.out.println("6- Consultar informações da obra");// feito
         System.out.println("7- Sair"); // feito
         int escolha = entrada.nextInt();
@@ -84,7 +84,9 @@ public class Bibliotecario extends Usuario {
             case 2:
                 System.out.println("Informe o email do usuário que está realizando a devolução: ");
                 String email = entrada.nextLine();
-                registrarDevolucao(email);
+                System.out.println("Informe o nome do livro que está sendo devolvido: ");
+                String nomeLivro = entrada.nextLine();
+                chamarBiblioteca(email, nomeLivro);
                 break;
             case 3:
                 desbloquearUsuario();
@@ -106,7 +108,7 @@ public class Bibliotecario extends Usuario {
 
                     if (resposta == 1) {
                         System.out.println("Informe o Id do livro que deseja consultar: ");
-                        int id = entrada.nextInt();
+                        String id = entrada.nextLine();
                         Obra obra = Biblioteca.consultarObraId(id);
                         Biblioteca.imprimirResultadoConsulta(obra);
                         respostaValida = true;
@@ -134,7 +136,6 @@ public class Bibliotecario extends Usuario {
         }
     }
 
-    // registra usuarios
     public void cadastrarUsuario(int tipo) {
         Scanner entrada = new Scanner(System.in);
         System.out.println("Informe o nome do usuário: ");
@@ -171,24 +172,22 @@ public class Bibliotecario extends Usuario {
 
     public void sair() {
 
-        // salvar todos os registros feitos no dia
+        // chamar login;
+        TelaInicio.login();
        
     }
 
-    public void registrarDevolucao(String email) {
+    public void chamarBiblioteca(String email, String nomeLivro) {
         // implementar
-        // Biblioteca.atualizarInformacoes();
-        ArrayList<String[]> linhas = Biblioteca.lerDados();
+        // Biblioteca.gerarUsuariosBloqueados();
+        //atualizar status em histórico 
+        //acrescentar devolução - acrescentarDevolucao();
 
-        for (String[] linha : linhas) {
-            if (linha[0].equals(email)) {
-
-            }
-        }
-        acrescentarDevolucao();
-
+        Biblioteca.registrarDevolucao(email, nomeLivro);
+        Biblioteca.atualizaStatus(email, nomeLivro);
         Biblioteca.gerarUsuariosBloqueados();
-
+        acrescentarDevolucao();
+        
     }
 
     public void desbloquearUsuario() {
@@ -198,27 +197,13 @@ public class Bibliotecario extends Usuario {
     public void listarObrasEmpres() {
         ArrayList<Emprestimos> historico = Biblioteca.lerHistoricoEmprestimos();
 
-        for (Emprestimos emprestimo : historico) {
-            System.out.println("Id: " + emprestimo.getId());
-            System.out.println("Título: " + emprestimo.getTitulo());
-            System.out.println("Data: " + emprestimo.getData());
-            System.out.println("Email do usuário: " + emprestimo.getEmail());
-            System.out.println("Status: " + emprestimo.getStatus());
-            System.out.println("------------------------------");
-        }
+        System.out.println("Relatório gerado com sucesso!");
     }
 
     public void listarUsuariosAtrasos() {
         Biblioteca.gerarUsuariosBloqueados();
-        ArrayList<String[]> linhas = Biblioteca.lerUsuariosBloqueados();
-
-        for (String[] linha : linhas) {
-            System.out.println("Usuário bloqueado:");
-            System.out.println(" - Email: " + linha[0]);
-            System.out.println(" - Nome do livro: " + linha[1]);
-            System.out.println(" - Data de bloqueio: " + linha[2]);
-            System.out.println("------------------------------");
-        }
+        
+        System.out.println("Relatório gerado com sucesso!");
 
     }
 }

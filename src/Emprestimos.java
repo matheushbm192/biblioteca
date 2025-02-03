@@ -9,7 +9,7 @@ public class Emprestimos extends Obra{
         super(id, titulo, quantidade);
         this.data = LocalDate.now();
         this.email = email;
-        this.status = "pendente";
+        this.status = "Emprestado";
     }
 
     public String getEmail() {
