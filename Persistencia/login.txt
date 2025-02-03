@@ -1,3 +1,4 @@
 Matheus@,1234,Matheus,3,31987145987,1
 paola@,123,paola,2,0063414,informática
+lucas@,123,lucas,1,matematica
 Bernardo@,1234,Bernardo,2,9207,Adimistração
