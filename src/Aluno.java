@@ -61,7 +61,6 @@ public class Aluno extends Usuario {
                     if (resposta == 1) {
                         System.out.println("Informes o Id do livro que deseja consultar: ");
                         String id = entrada.nextLine();
-                        System.out.println("Debug id: "+id);
                         Obra obra = Biblioteca.consultarObraId(id);
                         Biblioteca.imprimirResultadoConsulta(obra);
                     

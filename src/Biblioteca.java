@@ -37,7 +37,7 @@ public class Biblioteca {
         } else {
 
             boolean limite = limiteEmprestimos(usuario.getEmail(), usuario.getLimiteEmprestimo());
-            if (limite) {
+            if (!limite) {
                 System.out.println(
                         "Seu limite de empréstimos já foi alcançado. Realize devolução para pegar novos livros.");
             } else {
@@ -52,9 +52,8 @@ public class Biblioteca {
                     entrada.nextLine();
 
                     if (resposta == 1) {
-                        System.out.println("Informe o Id do livro que deseja consultar: ");
+                        System.out.println("Informe o Id do livro: ");
                         id = entrada.nextLine();
-                        entrada.nextLine();
                         Obra obra = consultarObraId(id);
                         titulo = obra.getTitulo();
                         quantidade = obra.getQuantidade();
@@ -63,11 +62,9 @@ public class Biblioteca {
                     } else if (resposta == 2) {
                         System.out.println("Informe o título do livro que deseja consultar: ");
                         titulo = entrada.nextLine();
-                        entrada.nextLine();
                         Obra obra = consultarObraTitulo(titulo);
                         id = obra.getId();
                         quantidade = obra.getQuantidade();
-                        imprimirResultadoConsulta(obra);
                         disponibilidade = exemplarDisponivel(obra);
                         respostaValida = true;
                     } else {
@@ -120,7 +117,6 @@ public class Biblioteca {
                 escritor.write(linha);
                 escritor.newLine();
             }
-            System.out.println("Quantidade de exemplares atualizada com sucesso!");
         } catch (IOException e) {
             System.out.println("Erro ao atualizar o arquivo");
         }
@@ -183,7 +179,7 @@ public class Biblioteca {
         for (Obra obra : lerAcervo()) {
             
             if (obra.getId().trim().equals(id.trim())) { 
-                System.out.println("Encontrado: " + obra.getTitulo());
+                
                 return obra;
             }
         
@@ -258,17 +254,15 @@ public class Biblioteca {
         for (String[] linha : linhas) {
 
             String[] valores = linha[0].split(",");
-            System.out.println(valores[0]);
 
             for (int i = 2; i < Integer.parseInt(valores[1]) + 2; i++) {
                 String[] resultado = valores[i].split("-");
                 livros.add(resultado);
             }
-            System.out.println(Arrays.toString(livros.getFirst()));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             for (String[] livro : livros) {
                 long diasDiferenca = ChronoUnit.DAYS.between(hoje, LocalDate.parse(livro[1], formatter));
-                System.out.println(diasDiferenca);
+                
                 if ((diasDiferenca * -1) > 7) {
                     String[] usuarioAtrasado = { valores[0], livro[0] + "-" + livro[1] };
                     atrasados.add(usuarioAtrasado);
@@ -278,14 +272,11 @@ public class Biblioteca {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(usuarioBloqueado))) {
 
             for (String[] linha : atrasados) {
-                System.out.println(Arrays.toString(linha));
                 // Junta os elementos do array com vírgula e espaço entre eles
                 String linhaFormatada = String.join(",", linha);
-                System.out.println("1 " + linhaFormatada);
                 escritor.write(linhaFormatada); // Escreve a linha no arquivo
                 escritor.newLine(); // Pula para a próxima linha
             }
-            System.out.println("Arquivo escrito com sucesso!");
 
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
@@ -294,7 +285,7 @@ public class Biblioteca {
     }
 
     public static boolean usuarioBloqueado(String email) {
-        gerarUsuariosBloqueados();
+        //gerarUsuariosBloqueados();
         ArrayList<String[]> linhas = lerUsuariosBloqueados();
 
         for (String[] linha : linhas) {
@@ -357,7 +348,6 @@ public class Biblioteca {
             escritor.write(linhaFormatada);
             escritor.newLine(); // Pula para a próxima linha
 
-            System.out.println("Arquivo escrito com sucesso!");
 
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
@@ -376,8 +366,6 @@ public class Biblioteca {
             escritor.write(linhaFormatada);
             escritor.newLine(); // Pula para a próxima linha
 
-            System.out.println("Arquivo escrito com sucesso!");
-
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
             e.printStackTrace();
@@ -395,7 +383,6 @@ public class Biblioteca {
             escritor.write(linhaFormatada);
             escritor.newLine(); // Pula para a próxima linha
 
-            System.out.println("Arquivo escrito com sucesso!");
 
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
@@ -419,7 +406,6 @@ public class Biblioteca {
             escritor.write(linhaFormatada);
             escritor.newLine();
 
-            System.out.println("Arquivo escrito com sucesso!");
 
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao escrever no arquivo.");
@@ -586,19 +572,21 @@ public class Biblioteca {
 }
 
     public static boolean limiteEmprestimos(String email, int limiteEmprestimo) {
-        // dados
         ArrayList<String[]> dados = lerDados();
-
-        for (String[] dado : dados) {
-            if (dado[0].equals(email)) {
-                if (Integer.parseInt(dado[1]) <= limiteEmprestimo) {
-                    return true;
-                }
-
+     
+    
+    for (String[] dado : dados) {
+        String[] linha = dado[0].split(",");
+        if (linha[0].equals(email)) {
+            if (Integer.parseInt(linha[1]) < limiteEmprestimo) {
+                return true;
+            }else{
+                return false;
             }
         }
+    }
 
-        return false;
+    return true;
     }
 
 }

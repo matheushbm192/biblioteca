@@ -5,7 +5,6 @@ public class TelaInicio {
 
     public static Usuario login() {
         ArrayList<String[]> quantidade = Biblioteca.lerLogin();
-        System.out.println(quantidade.size());
         if (quantidade.size() != 0) {
             Scanner entrada = new Scanner(System.in);
 
