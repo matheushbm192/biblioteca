@@ -582,4 +582,29 @@ public class Biblioteca {
     return true;
     }
 
+    public static void atualizarDadosLogin(Bibliotecario usuario){
+        ArrayList<String[]> logins = lerLogin();
+        for(int i = 0; i < logins.size(); i++){
+
+            String[]  resultado = logins.get(i)[0].split(",");
+            if(resultado[0].equals(usuario.getEmail())){
+                String[] login = {usuario.getEmail(),usuario.getSenha(),usuario.getNome(),"3",usuario.getTelefone(), String.valueOf(usuario.getQntDevolucoes())};
+                String[] linhaFormatada = new String[1];
+                linhaFormatada[0] = String.join(",", login);
+                logins.set(i,linhaFormatada);
+                break;
+            }
+
+        }
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(login))) {
+            // Junta os elementos do array com vírgula e espaço entre eles
+           for(String[] login : logins){
+               escritor.write(login[0]);
+               escritor.newLine(); // Pula para a próxima linha
+           }
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao escrever no arquivo.");
+            e.printStackTrace();
+        }
+    }
 }

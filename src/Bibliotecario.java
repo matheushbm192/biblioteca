@@ -178,9 +178,15 @@ public class Bibliotecario extends Usuario {
 
 
     public void sair() {
-
+        salvarDados();
         Main.main(new String[] {});
 
+    }
+
+    @Override
+    public void salvarDados() {
+        super.salvarDados();
+        Biblioteca.atualizarDadosLogin(this);
     }
 
     public void chamarBiblioteca(String email, String nomeLivro) {
