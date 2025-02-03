@@ -38,7 +38,7 @@ public class TelaInicio {
             } else {
                 System.out.println("Login não encontrado no sistema.\n");
                 System.out.println("Tente novamente");
-                login();
+                return login();
             }
         } else {
             cadastroBibliotecario();
