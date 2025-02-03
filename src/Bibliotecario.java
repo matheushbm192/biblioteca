@@ -28,14 +28,8 @@ public class Bibliotecario extends Usuario {
         this.qntDevolucoes += 1;
     }
 
-    public void menu(Object usuario) {
-
-        int quantDevolucoes = 0;
-
-        if (usuario instanceof Bibliotecario) {
-            Bibliotecario usuarioVez = (Bibliotecario) usuario; 
-            quantDevolucoes = usuarioVez.getQntDevolucoes();
-        }
+    public void menu() {
+        Bibliotecario usuarioVez = this;
 
         Scanner entrada = new Scanner(System.in);
 
@@ -53,7 +47,7 @@ public class Bibliotecario extends Usuario {
             case 1:
                 boolean validaResposta = false;
 
-                while (validaResposta = false) {
+                while (validaResposta == false) {
                     System.out.println("Para cadastrar Professor, digite 1.");
                     System.out.println("Para cadastrar Aluno, digite 2.");
                     System.out.println("Para cadastrar Bibliotecário, digite 3.");
@@ -100,7 +94,7 @@ public class Bibliotecario extends Usuario {
             case 6:
 
                 boolean respostaValida = false;
-                while (respostaValida = false) {
+                while (respostaValida == false) {
 
                     System.out.println("Para consultar um livro através do Id, digite 1.");
                     System.out.println("Para consultar um livro através do título, digite 2.");
@@ -180,14 +174,14 @@ public class Bibliotecario extends Usuario {
     public void chamarBiblioteca(String email, String nomeLivro) {
         // implementar
         // Biblioteca.gerarUsuariosBloqueados();
-        //atualizar status em histórico 
+        //atualizar status em histórico
         //acrescentar devolução - acrescentarDevolucao();
 
         Biblioteca.registrarDevolucao(email, nomeLivro);
         Biblioteca.atualizaStatus(email, nomeLivro);
         Biblioteca.gerarUsuariosBloqueados();
         acrescentarDevolucao();
-        
+
     }
 
     public void desbloquearUsuario() {
@@ -202,7 +196,7 @@ public class Bibliotecario extends Usuario {
 
     public void listarUsuariosAtrasos() {
         Biblioteca.gerarUsuariosBloqueados();
-        
+
         System.out.println("Relatório gerado com sucesso!");
 
     }

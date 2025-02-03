@@ -11,6 +11,12 @@ public class Emprestimos extends Obra{
         this.email = email;
         this.status = "Emprestado";
     }
+    public Emprestimos(String id, String titulo, LocalDate data, String email,int quantidade,String status) {
+        super(id, titulo, quantidade);
+        this.data = data;
+        this.email = email;
+        this.status = status;
+    }
 
     public String getEmail() {
         return email;

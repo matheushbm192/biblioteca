@@ -17,4 +17,48 @@ public class Professor extends Usuario {
     public String getDepartamento() {
         return departamento;
     }
+
+    public  void menu(){
+        Scanner entrada = new Scanner(System.in);
+
+        System.out.println("Informe qual ação deseja fazer:");
+        System.out.println("1- Realizar Empréstimo");//escrever a informação no arquivo dados
+        System.out.println("2- Consultar Informações da obra");//feito
+        System.out.println("3 - Sair");//feito
+
+        int escolha = entrada.nextInt();
+
+        switch (escolha) {
+            case 1:
+                Biblioteca.realizarEmprestimo(this);
+                break;
+            case 2:
+                while (true) {
+
+                    System.out.println("Para consultar um livro através do Id, digite 1.");
+                    System.out.println("Para consultar um livro através do título, digite 2.");
+                    int resposta = entrada.nextInt();
+
+                    if (resposta == 1) {
+                        System.out.println("Informe o Id do livro que deseja consultar: ");
+                        String id = entrada.nextLine();
+                        Obra obra = Biblioteca.consultarObraId(id);
+                        Biblioteca.imprimirResultadoConsulta(obra);
+                        break;
+                    } else if (resposta == 2) {
+                        System.out.println("Informe o título do livro que deseja consultar: ");
+                        String titulo = entrada.nextLine();
+                        Obra obra = Biblioteca.consultarObraTitulo(titulo);
+                        Biblioteca.imprimirResultadoConsulta(obra);
+                        break;
+                    }
+                }
+                break;
+            case 3:
+                Biblioteca.sair();
+                break;
+            default:
+                System.out.println("Opção inválida. Tente novamente!");
+        }
+    }
 }
