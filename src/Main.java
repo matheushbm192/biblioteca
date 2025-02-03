@@ -1,18 +1,10 @@
 public class Main {
     public static void main(String[] args) {
+        //atualiza lista de usuários bloqueados 
         Biblioteca.gerarUsuariosBloqueados();
+        //chama função login e armazena usuário retornado em usuarioVez
         Usuario usuarioVez = TelaInicio.login();
-
-        if(usuarioVez instanceof Professor){
-            System.out.println("Professor");
-        }
-        if(usuarioVez instanceof Aluno){
-            System.out.println("Aluno");
-        }
-        if(usuarioVez instanceof Bibliotecario){
-            System.out.println("Bibliotecário");
-        }
-        
+            //chama menu de acordo com o usuário retornado
             usuarioVez.menu();
         }
 
